@@ -1,0 +1,37 @@
+{
+  "name": "ftdamage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "npm run test:unit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:browser": "echo Open tests/browser-results.html in Chrome or Edge",
+    "build": "tsc -p tsconfig.json",
+    "generate:fleets": "npm run build && node dist/generateFleets.js",
+    "generate:fleets:ts": "tsx src/generateFleets.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Full-Thrust/ftDamage.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Full-Thrust/ftDamage/issues"
+  },
+  "homepage": "https://github.com/Full-Thrust/ftDamage#readme",
+  "devDependencies": {
+    "@types/node": "^25.3.5",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}

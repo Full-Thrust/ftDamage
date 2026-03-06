@@ -1,0 +1,69 @@
+{
+  "classKey": "DESTROYER",
+  "name": "Dunkerque",
+  "position": {
+    "x": 4500,
+    "y": 1389
+  },
+  "heading": 9,
+  "speed": 0,
+  "status": 1,
+  "damage": {
+    "total": 8,
+    "tracks": [
+      [
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 6,
+    "status": 1
+  },
+  "firecons": [
+    {
+      "status": 1
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "C",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 1
+    }
+  ]
+}

@@ -1,0 +1,923 @@
+{
+  "name": "ESU",
+  "sourceFleetFile": "./esu.json",
+  "ships": [
+    {
+      "classKey": "BATTLESHIP",
+      "name": "Marat",
+      "position": {
+        "x": 500,
+        "y": 500
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 22,
+        "tracks": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 4,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        },
+        {
+          "status": 1
+        },
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "P"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "P"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "S",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    },
+    {
+      "classKey": "CARRIER",
+      "name": "Oktyabrskaya Revolutsiya",
+      "position": {
+        "x": 500,
+        "y": 944
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 24,
+        "tracks": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 2,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        },
+        {
+          "status": 1
+        },
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "P",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    },
+    {
+      "classKey": "DESTROYER",
+      "name": "Varyag",
+      "position": {
+        "x": 500,
+        "y": 1389
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 8,
+        "tracks": [
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 6,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "C",
+          "arcs": [
+            "P",
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    },
+    {
+      "classKey": "DREADNOUGHT",
+      "name": "Aurora",
+      "position": {
+        "x": 500,
+        "y": 1833
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 28,
+        "tracks": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 2,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        },
+        {
+          "status": 1
+        },
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "P"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "P"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "P",
+            "S",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "P",
+            "S",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "P",
+            "S",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "P",
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    },
+    {
+      "classKey": "ESCORT_CRUISER",
+      "name": "Sevastopol",
+      "position": {
+        "x": 500,
+        "y": 2278
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 14,
+        "tracks": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 6,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        },
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "S",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    },
+    {
+      "classKey": "FRIGATE",
+      "name": "Kirov",
+      "position": {
+        "x": 500,
+        "y": 2722
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 6,
+        "tracks": [
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 6,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "C",
+          "arcs": [
+            "P",
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    },
+    {
+      "classKey": "HEAVY_CRUISER",
+      "name": "Admiral Kuznetsov",
+      "position": {
+        "x": 500,
+        "y": 3167
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 18,
+        "tracks": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 4,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        },
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "P"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "S",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    },
+    {
+      "classKey": "LANCER_CORVETTE",
+      "name": "Moskva",
+      "position": {
+        "x": 500,
+        "y": 3611
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 4,
+        "tracks": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 8,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    },
+    {
+      "classKey": "LIGHT_CRUISER",
+      "name": "Potemkin",
+      "position": {
+        "x": 500,
+        "y": 4056
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 12,
+        "tracks": [
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 6,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        },
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "P",
+            "A"
+          ],
+          "status": 1
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": [
+            "F",
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    },
+    {
+      "classKey": "SCOUT_COURIER",
+      "name": "Gangut",
+      "position": {
+        "x": 500,
+        "y": 4500
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "damage": {
+        "total": 2,
+        "tracks": [
+          [
+            1
+          ],
+          [
+            1
+          ]
+        ]
+      },
+      "drive": {
+        "thrust": 8,
+        "status": 1
+      },
+      "firecons": [
+        {
+          "status": 1
+        }
+      ],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "C",
+          "arcs": [
+            "F",
+            "P",
+            "S",
+            "A"
+          ],
+          "status": 1
+        }
+      ]
+    }
+  ]
+}

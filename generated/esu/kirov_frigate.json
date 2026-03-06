@@ -1,0 +1,57 @@
+{
+  "classKey": "FRIGATE",
+  "name": "Kirov",
+  "position": {
+    "x": 500,
+    "y": 2722
+  },
+  "heading": 3,
+  "speed": 0,
+  "status": 1,
+  "damage": {
+    "total": 6,
+    "tracks": [
+      [
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 6,
+    "status": 1
+  },
+  "firecons": [
+    {
+      "status": 1
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "C",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 1
+    }
+  ]
+}

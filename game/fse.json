@@ -1,0 +1,116 @@
+{
+  "$schema": "./fleet.schema.json",
+  "name": "FSE",
+  "ships": [
+    {
+      "classKey": "BATTLESHIP",
+      "name": "Colbert",
+      "position": {
+        "x": 4500,
+        "y": 500
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "CARRIER",
+      "name": "Tourville",
+      "position": {
+        "x": 4500,
+        "y": 944
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "DESTROYER",
+      "name": "Dunkerque",
+      "position": {
+        "x": 4500,
+        "y": 1389
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "DREADNOUGHT",
+      "name": "Jean Bart",
+      "position": {
+        "x": 4500,
+        "y": 1833
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "ESCORT_CRUISER",
+      "name": "Richelieu",
+      "position": {
+        "x": 4500,
+        "y": 2278
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "FRIGATE",
+      "name": "Strasbourg",
+      "position": {
+        "x": 4500,
+        "y": 2722
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "HEAVY_CRUISER",
+      "name": "Foch",
+      "position": {
+        "x": 4500,
+        "y": 3167
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "LANCER_CORVETTE",
+      "name": "Bretagne",
+      "position": {
+        "x": 4500,
+        "y": 3611
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "LIGHT_CRUISER",
+      "name": "Surcouf",
+      "position": {
+        "x": 4500,
+        "y": 4056
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "SCOUT_COURIER",
+      "name": "Courbet",
+      "position": {
+        "x": 4500,
+        "y": 4500
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-# Dependencies x
+﻿# Dependencies x
 node_modules/
 
 # Build outputs
@@ -24,4 +24,3 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
-

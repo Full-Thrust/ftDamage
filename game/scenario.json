@@ -1,0 +1,14 @@
+{
+  "title": "Line Abreast Engagement",
+  "boardSize": 5000,
+  "fleets": [
+    {
+      "name": "ESU",
+      "file": "./esu.json"
+    },
+    {
+      "name": "FSE",
+      "file": "./fse.json"
+    }
+  ]
+}

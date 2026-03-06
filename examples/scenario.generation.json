@@ -1,0 +1,16 @@
+﻿{
+  "title": "Line Abreast Engagement",
+  "boardSize": 5000,
+  "fleets": [
+    {
+      "name": "fleet1",
+      "file": "fleet1.json",
+      "instancesFile": "fleet1.instances.json"
+    },
+    {
+      "name": "fleet2",
+      "file": "fleet2.json",
+      "instancesFile": "fleet2.instances.json"
+    }
+  ]
+}

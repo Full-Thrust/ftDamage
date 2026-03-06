@@ -1,0 +1,78 @@
+{
+  "classKey": "LIGHT_CRUISER",
+  "name": "Potemkin",
+  "position": {
+    "x": 500,
+    "y": 4056
+  },
+  "heading": 3,
+  "speed": 0,
+  "status": 1,
+  "damage": {
+    "total": 12,
+    "tracks": [
+      [
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 6,
+    "status": 1
+  },
+  "firecons": [
+    {
+      "status": 1
+    },
+    {
+      "status": 1
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "A"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "S",
+        "A"
+      ],
+      "status": 1
+    }
+  ]
+}
