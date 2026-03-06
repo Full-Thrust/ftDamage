@@ -8,6 +8,7 @@ from typing import Any, List, Tuple
 
 ALLOWED_WEAPON_CLASSES = {"A", "B", "C"}
 ALLOWED_ARCS = {"F", "P", "S", "A"}
+ALLOWED_TYPES = {"BEAM", "NEEDLE", "PULSE"}
 
 
 def err(errors: List[str], path: str, message: str) -> None:
@@ -131,8 +132,8 @@ def validate_shipclass(doc: Any) -> List[str]:
                     err(errors, f"{wpath}.{key}", "unexpected property")
 
             if "type" in weapon and expect_type(errors, f"{wpath}.type", weapon["type"], "string"):
-                if weapon["type"] != "BEAM":
-                    err(errors, f"{wpath}.type", "must be 'BEAM'")
+                if weapon["type"] not in ALLOWED_TYPES:
+                    err(errors, f"{wpath}.type", "must be one of BEAM, NEEDLE, PULSE")
 
             if "class" in weapon and expect_type(errors, f"{wpath}.class", weapon["class"], "string"):
                 if weapon["class"] not in ALLOWED_WEAPON_CLASSES:
@@ -147,6 +148,16 @@ def validate_shipclass(doc: Any) -> List[str]:
                         continue
                     if arc not in ALLOWED_ARCS:
                         err(errors, apath, "must be one of F, P, S, A")
+
+                wtype = weapon.get("type")
+                if wtype == "NEEDLE":
+                    if len(weapon["arcs"]) != 1:
+                        err(errors, f"{wpath}.arcs", "NEEDLE must have exactly one arc")
+                elif wtype == "PULSE":
+                    if len(weapon["arcs"]) != 1:
+                        err(errors, f"{wpath}.arcs", "PULSE must have exactly one arc")
+                    elif weapon["arcs"][0] != "F":
+                        err(errors, f"{wpath}.arcs[0]", "PULSE must be in F arc")
 
     if "fighters" in doc and expect_type(errors, "$.fighters", doc["fighters"], "object"):
         fighters = doc["fighters"]

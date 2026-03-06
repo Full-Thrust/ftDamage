@@ -71,7 +71,9 @@
           "type": {
             "type": "string",
             "enum": [
-              "BEAM"
+              "BEAM",
+              "NEEDLE",
+              "PULSE"
             ]
           },
           "class": {
@@ -96,6 +98,49 @@
             }
           }
         },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "NEEDLE"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "arcs": {
+                  "minItems": 1,
+                  "maxItems": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "PULSE"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "arcs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "items": {
+                    "type": "string",
+                    "const": "F"
+                  }
+                }
+              }
+            }
+          }
+        ],
         "additionalProperties": false
       }
     },

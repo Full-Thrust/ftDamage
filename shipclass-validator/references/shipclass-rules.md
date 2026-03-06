@@ -30,11 +30,15 @@ Consistency rule used by this skill:
 ## Weapons
 
 Each weapon requires:
-- `type`: string, must be `BEAM`
+- `type`: string, must be `BEAM`, `NEEDLE`, or `PULSE`
 - `class`: string, must be `A`, `B`, or `C`
 - `arcs`: non-empty array of `F`, `P`, `S`, `A`
 
 No additional weapon properties are allowed.
+
+Type-specific arc rules:
+- `NEEDLE`: exactly one arc.
+- `PULSE`: exactly one arc and it must be `F`.
 
 ## Fixing Policy
 
