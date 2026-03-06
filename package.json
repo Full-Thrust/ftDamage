@@ -12,7 +12,7 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:browser": "echo Open tests/damage.html in Chrome or Edge",
-    "test:browser:fleet": "node tests/fleet.js && echo Open tests/fleet.html in Chrome or Edge",
+    "test:browser:fleet": "echo Open tests/fleet.html in Chrome or Edge and choose generated/ folder",
     "build": "tsc -p tsconfig.json",
     "generate:fleets": "npm run build && node dist/generateFleets.js",
     "generate:fleets:ts": "tsx src/generateFleets.ts"
@@ -36,5 +36,3 @@
     "vitest": "^4.0.18"
   }
 }
-
-

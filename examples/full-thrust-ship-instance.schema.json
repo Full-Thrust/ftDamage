@@ -57,12 +57,17 @@
       "type": "object",
       "required": [
         "total",
+        "hits",
         "tracks"
       ],
       "properties": {
         "total": {
           "type": "integer",
           "minimum": 1
+        },
+        "hits": {
+          "type": "integer",
+          "minimum": 0
         },
         "tracks": {
           "type": "array",
@@ -113,8 +118,10 @@
             "type": "integer",
             "enum": [
               0,
-              1
-            ]
+              1,
+              2
+            ],
+            "description": "0=destroyed, 1=operational, 2=launched"
           }
         }
       }
@@ -152,6 +159,30 @@
                 "A"
               ]
             }
+          },
+          "status": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ]
+          }
+        }
+      }
+    },
+    "fighters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "count",
+          "status"
+        ],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 6
           },
           "status": {
             "type": "integer",

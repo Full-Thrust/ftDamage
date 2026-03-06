@@ -8,28 +8,59 @@
       "thrust": 6,
       "damage": {
         "total": 12,
+        "hits": 0,
         "tracks": [
-          [1, 1, 1, 1],
-          [1, 1, 1, 1],
-          [1, 1, 1, 1]
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
         ]
       },
-      "firecons": [1, 1],
+      "firecons": [
+        1,
+        1
+      ],
       "weapons": [
         {
           "type": "BEAM",
           "class": "A",
-          "arcs": ["F", "P", "S"]
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ]
         },
         {
           "type": "BEAM",
           "class": "B",
-          "arcs": ["F", "P", "A"]
+          "arcs": [
+            "F",
+            "P",
+            "A"
+          ]
         },
         {
           "type": "BEAM",
           "class": "B",
-          "arcs": ["F", "S", "A"]
+          "arcs": [
+            "F",
+            "S",
+            "A"
+          ]
         }
       ],
       "position": {
@@ -70,27 +101,52 @@
       "thrust": 6,
       "damage": {
         "total": 8,
+        "hits": 0,
         "tracks": [
-          [1, 1, 1, 1],
-          [1, 1, 1, 1]
+          [
+            1,
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1,
+            1
+          ]
         ]
       },
-      "firecons": [1],
+      "firecons": [
+        1
+      ],
       "weapons": [
         {
           "type": "BEAM",
           "class": "B",
-          "arcs": ["F", "P", "S"]
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ]
         },
         {
           "type": "BEAM",
           "class": "B",
-          "arcs": ["F", "P", "S"]
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ]
         },
         {
           "type": "BEAM",
           "class": "C",
-          "arcs": ["P", "S", "A"]
+          "arcs": [
+            "P",
+            "S",
+            "A"
+          ]
         }
       ],
       "position": {
@@ -128,22 +184,41 @@
       "thrust": 6,
       "damage": {
         "total": 6,
+        "hits": 0,
         "tracks": [
-          [1, 1, 1],
-          [1, 1, 1]
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            1,
+            1,
+            1
+          ]
         ]
       },
-      "firecons": [1],
+      "firecons": [
+        1
+      ],
       "weapons": [
         {
           "type": "BEAM",
           "class": "B",
-          "arcs": ["F", "P", "S"]
+          "arcs": [
+            "F",
+            "P",
+            "S"
+          ]
         },
         {
           "type": "BEAM",
           "class": "C",
-          "arcs": ["P", "S", "A"]
+          "arcs": [
+            "P",
+            "S",
+            "A"
+          ]
         }
       ],
       "position": {

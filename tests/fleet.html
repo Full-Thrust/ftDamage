@@ -7,2216 +7,382 @@
   <style>
     body { font-family: Segoe UI, Arial, sans-serif; margin: 20px; background: #f4f6f8; color: #1f2937; }
     h1 { margin: 0 0 8px; }
+    h2 { margin: 16px 0 8px; font-size: 20px; color: #111827; }
     .meta { margin: 0 0 16px; color: #374151; }
+    .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 12px 0 16px; }
+    .btn, .file-label {
+      background: #111827;
+      color: #fff;
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .file-label input { display: none; }
+    .hint { font-size: 13px; color: #4b5563; }
     details { background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
-    details.fleet-ship { margin: 10px 0 0; background: #fbfdff; }
+    .fleet-block { margin: 0 0 16px; }
     summary { cursor: pointer; font-weight: 700; color: #111827; }
     .path { margin-top: 8px; font-size: 12px; color: #6b7280; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 14px; margin-top: 10px; }
     .field { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px; }
     .label { font-weight: 700; color: #111827; }
+    .status-pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+    .status-operational { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .status-damaged { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+    .status-destroyed { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
     h3 { margin: 12px 0 8px; font-size: 14px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th, td { border: 1px solid #d1d5db; padding: 6px 8px; text-align: left; }
     th { background: #eef2f7; }
     .error { margin-top: 8px; color: #991b1b; font-weight: 600; }
+    .destroyed-badge { color: #b91c1c; font-weight: 800; }
+    .tracks { margin-top: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px; }
+    .track-row { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; margin: 2px 0; }
+    .firecons { margin-top: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px; }
+    .firecon-row { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; margin: 2px 0; }
+    .fighters { margin-top: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px; }
+    .fighter-row { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; margin: 2px 0; }
   </style>
 </head>
 <body>
   <h1>Generated Fleet Instances</h1>
-  <p class="meta">JSON files: 22 | Fleet records: 2 | Ship records shown: 40 | Generated at: 2026-03-06T17:43:09.759Z</p>
-<details>
-  <summary>Fleet ESU (10 ships)</summary>
-  <div class="path">
-    Source: generated/esu.json
+  <p id="meta" class="meta">Load files from your local <code>generated/</code> folder.</p>
+
+  <div class="controls">
+    <label class="file-label">
+      Choose generated folder
+      <input id="dirPicker" type="file" webkitdirectory directory multiple accept=".json" />
+    </label>
+    <button id="rerender" class="btn" type="button">Re-render Current Selection</button>
+    <span class="hint">Pick the <code>generated/</code> directory (or any parent containing it).</span>
   </div>
-  <section class="grid">
-<div class="field"><span class="label">Fleet Name:</span> <span>ESU</span></div>
-<div class="field"><span class="label">Source Fleet File:</span> <span>./esu.json</span></div>
-<div class="field"><span class="label">Ship Count:</span> <span>10</span></div>
-  </section>
-<details class="fleet-ship">
-  <summary>Marat (BATTLESHIP)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Marat</span></div>
-<div class="field"><span class="label">Class:</span> <span>BATTLESHIP</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=500</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>4</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/22 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
 
-<details class="fleet-ship">
-  <summary>Oktyabrskaya Revolutsiya (CARRIER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Oktyabrskaya Revolutsiya</span></div>
-<div class="field"><span class="label">Class:</span> <span>CARRIER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=944</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>2</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/24 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+  <main id="content">
+    <p class="meta">No files loaded yet.</p>
+  </main>
 
-<details class="fleet-ship">
-  <summary>Varyag (DESTROYER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Varyag</span></div>
-<div class="field"><span class="label">Class:</span> <span>DESTROYER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=1389</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/8 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+  <script>
+    const metaEl = document.getElementById("meta");
+    const contentEl = document.getElementById("content");
+    const dirPicker = document.getElementById("dirPicker");
+    const rerenderBtn = document.getElementById("rerender");
+    const SHIP_STATUS = Object.freeze({
+      DESTROYED: 0,
+      OPERATIONAL: 1,
+      DAMAGED: 2,
+    });
 
-<details class="fleet-ship">
-  <summary>Aurora (DREADNOUGHT)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Aurora</span></div>
-<div class="field"><span class="label">Class:</span> <span>DREADNOUGHT</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=1833</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>2</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/28 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    let currentFiles = [];
 
-<details class="fleet-ship">
-  <summary>Sevastopol (ESCORT_CRUISER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Sevastopol</span></div>
-<div class="field"><span class="label">Class:</span> <span>ESCORT_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=2278</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/14 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
 
-<details class="fleet-ship">
-  <summary>Kirov (FRIGATE)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Kirov</span></div>
-<div class="field"><span class="label">Class:</span> <span>FRIGATE</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=2722</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/6 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function statusLabel(status) {
+      if (status === 0) return "Destroyed";
+      if (status === 1) return "Operational";
+      if (status === 2) return "Damaged";
+      return String(status);
+    }
 
-<details class="fleet-ship">
-  <summary>Admiral Kuznetsov (HEAVY_CRUISER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Admiral Kuznetsov</span></div>
-<div class="field"><span class="label">Class:</span> <span>HEAVY_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=3167</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>4</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/18 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function countDestroyedBoxes(tracks) {
+      if (!Array.isArray(tracks)) return 0;
+      let count = 0;
+      for (const row of tracks) {
+        if (!Array.isArray(row)) continue;
+        for (const box of row) {
+          if (box === 0) count += 1;
+        }
+      }
+      return count;
+    }
 
-<details class="fleet-ship">
-  <summary>Moskva (LANCER_CORVETTE)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Moskva</span></div>
-<div class="field"><span class="label">Class:</span> <span>LANCER_CORVETTE</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=3611</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>8</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/4 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function renderField(label, value) {
+      return `<div class="field"><span class="label">${escapeHtml(label)}:</span> <span>${escapeHtml(value)}</span></div>`;
+    }
 
-<details class="fleet-ship">
-  <summary>Potemkin (LIGHT_CRUISER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Potemkin</span></div>
-<div class="field"><span class="label">Class:</span> <span>LIGHT_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=4056</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/12 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function renderFieldHtml(label, htmlValue) {
+      return `<div class="field"><span class="label">${escapeHtml(label)}:</span> <span>${htmlValue}</span></div>`;
+    }
 
-<details class="fleet-ship">
-  <summary>Gangut (SCOUT_COURIER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Gangut</span></div>
-<div class="field"><span class="label">Class:</span> <span>SCOUT_COURIER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=4500</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>8</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/2 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>F, P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
-</details>
+    function isShipInstance(value) {
+      return Boolean(value && typeof value === "object" && value.classKey && value.position && value.damage);
+    }
 
-<details>
-  <summary>Admiral Kuznetsov (HEAVY_CRUISER)</summary>
-  <div class="path">
-    Source: generated/esu/admiral_kuznetsov_heavy_cruiser.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Admiral Kuznetsov</span></div>
-<div class="field"><span class="label">Class:</span> <span>HEAVY_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=3167</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>4</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/18 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function shipStatusVisual(status) {
+      if (status === SHIP_STATUS.OPERATIONAL) {
+        return { label: "Undamaged", className: "status-operational" };
+      }
+      if (status === SHIP_STATUS.DESTROYED) {
+        return { label: "Destroyed", className: "status-destroyed" };
+      }
+      if (status === SHIP_STATUS.DAMAGED) {
+        return { label: "Damaged", className: "status-damaged" };
+      }
+      return { label: String(status), className: "" };
+    }
 
-<details>
-  <summary>Aurora (DREADNOUGHT)</summary>
-  <div class="path">
-    Source: generated/esu/aurora_dreadnought.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Aurora</span></div>
-<div class="field"><span class="label">Class:</span> <span>DREADNOUGHT</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=1833</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>2</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/28 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function driveStatusVisual(status) {
+      if (status === SHIP_STATUS.OPERATIONAL) {
+        return { label: "Undamaged", className: "status-operational" };
+      }
+      if (status === SHIP_STATUS.DESTROYED) {
+        return { label: "Destroyed", className: "status-destroyed" };
+      }
+      if (status === SHIP_STATUS.DAMAGED) {
+        return { label: "Damaged", className: "status-damaged" };
+      }
+      return { label: String(status), className: "" };
+    }
 
-<details>
-  <summary>Gangut (SCOUT_COURIER)</summary>
-  <div class="path">
-    Source: generated/esu/gangut_scout_courier.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Gangut</span></div>
-<div class="field"><span class="label">Class:</span> <span>SCOUT_COURIER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=4500</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>8</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/2 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>F, P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function weaponStatusVisual(status) {
+      if (status === SHIP_STATUS.OPERATIONAL) {
+        return { label: "Undamaged", className: "status-operational" };
+      }
+      if (status === SHIP_STATUS.DESTROYED) {
+        return { label: "Destroyed", className: "status-destroyed" };
+      }
+      return { label: String(status), className: "" };
+    }
 
-<details>
-  <summary>Kirov (FRIGATE)</summary>
-  <div class="path">
-    Source: generated/esu/kirov_frigate.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Kirov</span></div>
-<div class="field"><span class="label">Class:</span> <span>FRIGATE</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=2722</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/6 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function renderDamageTracks(tracks) {
+      if (!Array.isArray(tracks) || !tracks.length) {
+        return '<div class="tracks"><div class="track-row">No tracks</div></div>';
+      }
 
-<details>
-  <summary>Marat (BATTLESHIP)</summary>
-  <div class="path">
-    Source: generated/esu/marat_battleship.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Marat</span></div>
-<div class="field"><span class="label">Class:</span> <span>BATTLESHIP</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=500</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>4</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/22 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      const rows = tracks.map((row, idx) => {
+        if (!Array.isArray(row)) {
+          return '<div class="track-row">invalid</div>';
+        }
 
-<details>
-  <summary>Moskva (LANCER_CORVETTE)</summary>
-  <div class="path">
-    Source: generated/esu/moskva_lancer_corvette.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Moskva</span></div>
-<div class="field"><span class="label">Class:</span> <span>LANCER_CORVETTE</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=3611</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>8</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/4 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+        const boxes = row
+          .map((cell) => (cell === 0 ? "[x]" : "[ ]"))
+          .join(" ");
+        return `<div class="track-row">${boxes}</div>`;
+      }).join("");
 
-<details>
-  <summary>Oktyabrskaya Revolutsiya (CARRIER)</summary>
-  <div class="path">
-    Source: generated/esu/oktyabrskaya_revolutsiya_carrier.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Oktyabrskaya Revolutsiya</span></div>
-<div class="field"><span class="label">Class:</span> <span>CARRIER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=944</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>2</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/24 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      return `<div class="tracks">${rows}</div>`;
+    }
 
-<details>
-  <summary>Potemkin (LIGHT_CRUISER)</summary>
-  <div class="path">
-    Source: generated/esu/potemkin_light_cruiser.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Potemkin</span></div>
-<div class="field"><span class="label">Class:</span> <span>LIGHT_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=4056</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/12 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function renderFirecons(firecons) {
+      if (!Array.isArray(firecons) || !firecons.length) {
+        return '<div class="firecons"><div class="firecon-row">No firecons</div></div>';
+      }
 
-<details>
-  <summary>Sevastopol (ESCORT_CRUISER)</summary>
-  <div class="path">
-    Source: generated/esu/sevastopol_escort_cruiser.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Sevastopol</span></div>
-<div class="field"><span class="label">Class:</span> <span>ESCORT_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=2278</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/14 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      const rows = firecons.map((fc) => {
+        const status = fc && fc.status === 0 ? "(x)" : "(●)";
+        return `<div class="firecon-row">${status}</div>`;
+      }).join("");
 
-<details>
-  <summary>Varyag (DESTROYER)</summary>
-  <div class="path">
-    Source: generated/esu/varyag_destroyer.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Varyag</span></div>
-<div class="field"><span class="label">Class:</span> <span>DESTROYER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=500, y=1389</span></div>
-<div class="field"><span class="label">Heading:</span> <span>3</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/8 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      return `<div class="firecons">${rows}</div>`;
+    }
 
-<details>
-  <summary>Fleet FSE (10 ships)</summary>
-  <div class="path">
-    Source: generated/fse.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Fleet Name:</span> <span>FSE</span></div>
-<div class="field"><span class="label">Source Fleet File:</span> <span>./fse.json</span></div>
-<div class="field"><span class="label">Ship Count:</span> <span>10</span></div>
-  </section>
-<details class="fleet-ship">
-  <summary>Colbert (BATTLESHIP)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Colbert</span></div>
-<div class="field"><span class="label">Class:</span> <span>BATTLESHIP</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=500</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>4</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/22 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function renderFighters(fighters) {
+      if (!Array.isArray(fighters) || !fighters.length) {
+        return '<div class="fighters"><div class="fighter-row">None</div></div>';
+      }
 
-<details class="fleet-ship">
-  <summary>Tourville (CARRIER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Tourville</span></div>
-<div class="field"><span class="label">Class:</span> <span>CARRIER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=944</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>2</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/24 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      const rows = fighters.map((group) => {
+        if (!group || typeof group !== "object") {
+          return '<div class="fighter-row">invalid</div>';
+        }
+        const fighterStatus = Number(group.status);
+        if (fighterStatus === 2) {
+          return '<div class="fighter-row">( ) <span class="status-pill status-damaged">Launched</span></div>';
+        }
+        if (fighterStatus === 0) {
+          return '<div class="fighter-row">(x) <span class="status-pill status-destroyed">Destroyed</span></div>';
+        }
+        const count = Number.isFinite(group.count) ? group.count : 6;
+        return `<div class="fighter-row">(^) ${escapeHtml(count)}</div>`;
+      }).join("");
 
-<details class="fleet-ship">
-  <summary>Dunkerque (DESTROYER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Dunkerque</span></div>
-<div class="field"><span class="label">Class:</span> <span>DESTROYER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=1389</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/8 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      return `<div class="fighters">${rows}</div>`;
+    }
 
-<details class="fleet-ship">
-  <summary>Jean Bart (DREADNOUGHT)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Jean Bart</span></div>
-<div class="field"><span class="label">Class:</span> <span>DREADNOUGHT</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=1833</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>2</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/28 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function renderShipContent(ship) {
+      const position = ship.position || {};
+      const drive = ship.drive || {};
+      const damage = ship.damage || {};
+      const firecons = Array.isArray(ship.firecons) ? ship.firecons : [];
+      const weapons = Array.isArray(ship.weapons) ? ship.weapons : [];
+      const shipStatus = shipStatusVisual(ship.status);
+      const driveStatus = driveStatusVisual(drive.status);
 
-<details class="fleet-ship">
-  <summary>Richelieu (ESCORT_CRUISER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Richelieu</span></div>
-<div class="field"><span class="label">Class:</span> <span>ESCORT_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=2278</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/14 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      const destroyed = Number.isFinite(damage.hits) ? damage.hits : countDestroyedBoxes(damage.tracks);
+      const total = Number.isFinite(damage.total) ? damage.total : "?";
 
-<details class="fleet-ship">
-  <summary>Strasbourg (FRIGATE)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Strasbourg</span></div>
-<div class="field"><span class="label">Class:</span> <span>FRIGATE</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=2722</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/6 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      const weaponRows = weapons.length
+        ? weapons.map((w, i) => {
+            const arcs = Array.isArray(w.arcs) ? w.arcs.join(", ") : "-";
+            return [
+              "<tr>",
+              `  <td>${i + 1}</td>`,
+              `  <td>${escapeHtml(w.type || "-")}</td>`,
+              `  <td>${escapeHtml(w.class || "-")}</td>`,
+              `  <td>${escapeHtml(arcs)}</td>`,
+              `  <td><span class="status-pill ${weaponStatusVisual(w.status).className}">${escapeHtml(weaponStatusVisual(w.status).label)}</span></td>`,
+              "</tr>"
+            ].join("\n");
+          }).join("\n")
+        : '<tr><td colspan="5">No weapons listed</td></tr>';
 
-<details class="fleet-ship">
-  <summary>Foch (HEAVY_CRUISER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Foch</span></div>
-<div class="field"><span class="label">Class:</span> <span>HEAVY_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=3167</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>4</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/18 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      return [
+        "  <section class=\"grid\">",
+        renderField("Name", ship.name || "-"),
+        renderField("Class", ship.classKey || "-"),
+        renderFieldHtml("Ship Status", `<span class="status-pill ${shipStatus.className}">${escapeHtml(shipStatus.label)}</span>`),
+        renderField("Position", `x=${position.x ?? "-"}, y=${position.y ?? "-"}`),
+        renderField("Heading", ship.heading ?? "-"),
+        renderField("Speed", ship.speed ?? "-"),
+        renderField("Drive Thrust", drive.thrust ?? "-"),
+        renderFieldHtml("Drive Status", `<span class="status-pill ${driveStatus.className}">${escapeHtml(driveStatus.label)}</span>`),
+        renderField("Damage", `${destroyed}/${total} boxes destroyed`),
+        "  </section>",
+        "  <section>",
+        "    <h3>Firecon</h3>",
+        `    ${renderFirecons(firecons)}`,
+        "  </section>",
+        "  <section>",
+        "    <h3>Damage Tracks</h3>",
+        `    ${renderDamageTracks(damage.tracks)}`,
+        "  </section>",
+        "  <section>",
+        "    <h3>Fighter Groups</h3>",
+        `    ${renderFighters(ship.fighters)}`,
+        "  </section>",
+        "  <section>",
+        "    <h3>Weapons</h3>",
+        "    <table>",
+        "      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>",
+        `      <tbody>${weaponRows}</tbody>`,
+        "    </table>",
+        "  </section>"
+      ].join("\n");
+    }
 
-<details class="fleet-ship">
-  <summary>Bretagne (LANCER_CORVETTE)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Bretagne</span></div>
-<div class="field"><span class="label">Class:</span> <span>LANCER_CORVETTE</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=3611</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>8</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/4 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    function renderShipCard(sourcePath, ship) {
+      const damage = ship.damage || {};
+      const destroyed = Number.isFinite(damage.hits) ? damage.hits : countDestroyedBoxes(damage.tracks);
+      const total = Number.isFinite(damage.total) ? damage.total : 0;
+      const isDestroyed = Number.isFinite(total) && total > 0 && destroyed >= total;
+      const destroyedMark = isDestroyed ? ' <span class="destroyed-badge">DESTROYED</span>' : "";
+      return [
+        "<details>",
+        `  <summary>${escapeHtml(ship.name || "Unnamed Ship")} (${escapeHtml(ship.classKey || "Unknown")})${destroyedMark}</summary>`,
+        "  <div class=\"path\">",
+        `    Source: ${escapeHtml(sourcePath)}`,
+        "  </div>",
+        renderShipContent(ship),
+        "</details>"
+      ].join("\n");
+    }
 
-<details class="fleet-ship">
-  <summary>Surcouf (LIGHT_CRUISER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Surcouf</span></div>
-<div class="field"><span class="label">Class:</span> <span>LIGHT_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=4056</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/12 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    async function parseFleetData(files) {
+      const shipsByFleet = new Map();
+      const errors = [];
+      let shipCount = 0;
 
-<details class="fleet-ship">
-  <summary>Courbet (SCOUT_COURIER)</summary>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Courbet</span></div>
-<div class="field"><span class="label">Class:</span> <span>SCOUT_COURIER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=4500</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>8</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/2 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>F, P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
-</details>
+      for (const file of files) {
+        const rel = (file.webkitRelativePath || file.name).replace(/\\/g, "/");
+        if (!rel.toLowerCase().endsWith(".json")) {
+          continue;
+        }
 
-<details>
-  <summary>Bretagne (LANCER_CORVETTE)</summary>
-  <div class="path">
-    Source: generated/fse/bretagne_lancer_corvette.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Bretagne</span></div>
-<div class="field"><span class="label">Class:</span> <span>LANCER_CORVETTE</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=3611</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>8</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/4 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+        const parts = rel.split("/");
+        let underGenerated = "";
+        let fleetFolder = "";
 
-<details>
-  <summary>Colbert (BATTLESHIP)</summary>
-  <div class="path">
-    Source: generated/fse/colbert_battleship.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Colbert</span></div>
-<div class="field"><span class="label">Class:</span> <span>BATTLESHIP</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=500</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>4</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/22 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+        const generatedIndex = parts.lastIndexOf("generated");
+        if (generatedIndex >= 0) {
+          const tail = parts.slice(generatedIndex);
+          if (tail.length !== 3) {
+            continue;
+          }
+          underGenerated = tail.join("/");
+          fleetFolder = tail[1];
+        } else {
+          if (parts.length !== 2) {
+            continue;
+          }
+          underGenerated = `generated/${rel}`;
+          fleetFolder = parts[0];
+        }
 
-<details>
-  <summary>Courbet (SCOUT_COURIER)</summary>
-  <div class="path">
-    Source: generated/fse/courbet_scout_courier.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Courbet</span></div>
-<div class="field"><span class="label">Class:</span> <span>SCOUT_COURIER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=4500</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>8</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/2 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>F, P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+        if (!fleetFolder) {
+          continue;
+        }
 
-<details>
-  <summary>Dunkerque (DESTROYER)</summary>
-  <div class="path">
-    Source: generated/fse/dunkerque_destroyer.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Dunkerque</span></div>
-<div class="field"><span class="label">Class:</span> <span>DESTROYER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=1389</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/8 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+        try {
+          const text = await file.text();
+          const parsed = JSON.parse(text);
+          if (!isShipInstance(parsed)) {
+            continue;
+          }
 
-<details>
-  <summary>Foch (HEAVY_CRUISER)</summary>
-  <div class="path">
-    Source: generated/fse/foch_heavy_cruiser.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Foch</span></div>
-<div class="field"><span class="label">Class:</span> <span>HEAVY_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=3167</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>4</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/18 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+          if (!shipsByFleet.has(fleetFolder)) {
+            shipsByFleet.set(fleetFolder, []);
+          }
+          shipsByFleet.get(fleetFolder).push({ source: underGenerated, ship: parsed });
+          shipCount += 1;
+        } catch (err) {
+          errors.push(`<details><summary>${escapeHtml(underGenerated)}</summary><div class=\"error\">Failed to parse JSON: ${escapeHtml(err.message || String(err))}</div></details>`);
+        }
+      }
 
-<details>
-  <summary>Jean Bart (DREADNOUGHT)</summary>
-  <div class="path">
-    Source: generated/fse/jean_bart_dreadnought.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Jean Bart</span></div>
-<div class="field"><span class="label">Class:</span> <span>DREADNOUGHT</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=1833</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>2</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/28 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      const sections = Array.from(shipsByFleet.entries())
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([fleetFolder, entries]) => {
+          const shipList = entries
+            .sort((a, b) => a.source.localeCompare(b.source))
+            .map((entry) => renderShipCard(entry.source, entry.ship))
+            .join("\n\n");
 
-<details>
-  <summary>Richelieu (ESCORT_CRUISER)</summary>
-  <div class="path">
-    Source: generated/fse/richelieu_escort_cruiser.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Richelieu</span></div>
-<div class="field"><span class="label">Class:</span> <span>ESCORT_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=2278</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/14 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+          return [
+            '<section class="fleet-block">',
+            `  <h2>Fleet ${escapeHtml(fleetFolder.toUpperCase())} (${entries.length} ships)</h2>`,
+            shipList || '  <div class="meta">No ships listed.</div>',
+            "</section>"
+          ].join("\n");
+        });
 
-<details>
-  <summary>Strasbourg (FRIGATE)</summary>
-  <div class="path">
-    Source: generated/fse/strasbourg_frigate.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Strasbourg</span></div>
-<div class="field"><span class="label">Class:</span> <span>FRIGATE</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=2722</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/6 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>1</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>C</td>
-  <td>P, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      return {
+        jsonFiles: files.filter((f) => (f.webkitRelativePath || f.name).toLowerCase().endsWith(".json")).length,
+        fleetCount: shipsByFleet.size,
+        shipCount,
+        html: [...sections, ...errors].join("\n\n"),
+      };
+    }
 
-<details>
-  <summary>Surcouf (LIGHT_CRUISER)</summary>
-  <div class="path">
-    Source: generated/fse/surcouf_light_cruiser.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Surcouf</span></div>
-<div class="field"><span class="label">Class:</span> <span>LIGHT_CRUISER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=4056</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>6</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/12 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>2</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>A</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+    async function renderFromCurrentFiles() {
+      if (!currentFiles.length) {
+        contentEl.innerHTML = '<p class="meta">No files loaded yet.</p>';
+        return;
+      }
 
-<details>
-  <summary>Tourville (CARRIER)</summary>
-  <div class="path">
-    Source: generated/fse/tourville_carrier.json
-  </div>
-  <section class="grid">
-<div class="field"><span class="label">Name:</span> <span>Tourville</span></div>
-<div class="field"><span class="label">Class:</span> <span>CARRIER</span></div>
-<div class="field"><span class="label">Ship Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Position:</span> <span>x=4500, y=944</span></div>
-<div class="field"><span class="label">Heading:</span> <span>9</span></div>
-<div class="field"><span class="label">Speed:</span> <span>0</span></div>
-<div class="field"><span class="label">Drive Thrust:</span> <span>2</span></div>
-<div class="field"><span class="label">Drive Status:</span> <span>Operational</span></div>
-<div class="field"><span class="label">Damage:</span> <span>0/24 boxes destroyed</span></div>
-<div class="field"><span class="label">Fire Controls:</span> <span>3</span></div>
-  </section>
-  <section>
-    <h3>Weapons</h3>
-    <table>
-      <thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-      <tbody><tr>
-  <td>1</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>F, P, S</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>P, A</td>
-  <td>Operational</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>BEAM</td>
-  <td>B</td>
-  <td>S, A</td>
-  <td>Operational</td>
-</tr></tbody>
-    </table>
-  </section>
-</details>
+      const result = await parseFleetData(currentFiles);
+      const generatedAt = new Date().toISOString();
+      metaEl.textContent = `JSON files loaded: ${result.jsonFiles} | Fleet records: ${result.fleetCount} | Ship records shown: ${result.shipCount} | Rendered at: ${generatedAt}`;
+      contentEl.innerHTML = result.html || '<p class="meta">No ship instance JSON files found under generated/&lt;fleet&gt;/.json</p>';
+    }
+
+    dirPicker.addEventListener("change", async (event) => {
+      currentFiles = Array.from(event.target.files || []);
+      await renderFromCurrentFiles();
+    });
+
+    rerenderBtn.addEventListener("click", async () => {
+      await renderFromCurrentFiles();
+    });
+  </script>
 </body>
 </html>

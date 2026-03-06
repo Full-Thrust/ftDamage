@@ -15,6 +15,9 @@ interface GenericShipClass {
     class: "A" | "B" | "C";
     arcs: Array<"F" | "P" | "S" | "A">;
   }>;
+  fighters?: {
+    capacity: number;
+  };
 }
 
 interface FleetShipRef {
@@ -47,6 +50,7 @@ interface FleetInstanceShip {
   status: 0 | 1 | 2;
   damage: {
     total: number;
+    hits: number;
     tracks: number[][];
   };
   drive: {
@@ -59,6 +63,10 @@ interface FleetInstanceShip {
     class: "A" | "B" | "C";
     arcs: Array<"F" | "P" | "S" | "A">;
     status: 0 | 1;
+  }>;
+  fighters?: Array<{
+    count: number;
+    status: 0 | 1 | 2;
   }>;
 }
 
@@ -111,8 +119,37 @@ function toFleetSpecificShipName(originalShipName: string, classKey: string): st
   return stripped.length > 0 ? stripped : classKey;
 }
 
+function countTrackBoxes(tracks: number[][]): number {
+  return tracks.reduce((sum, row) => sum + row.length, 0);
+}
+
+function countTrackHits(tracks: number[][]): number {
+  return tracks.reduce((sum, row) => sum + row.filter((cell) => cell === 0).length, 0);
+}
+
+function toFighterGroups(capacity?: number): Array<{ count: number; status: 0 | 1 | 2 }> | undefined {
+  if (!Number.isFinite(capacity) || (capacity ?? 0) <= 0) {
+    return undefined;
+  }
+
+  const groups: Array<{ count: number; status: 0 | 1 | 2 }> = [];
+  let remaining = Math.floor(capacity as number);
+
+  while (remaining > 0) {
+    const groupCount = Math.min(6, remaining);
+    groups.push({
+      count: groupCount,
+      status: 1, // 1=operational, 2=launched, 0=destroyed
+    });
+    remaining -= groupCount;
+  }
+
+  return groups;
+}
+
 function toInstanceShip(fleetShip: FleetShipRef, def: GenericShipClass): FleetInstanceShip {
   const generatedName = toFleetSpecificShipName(fleetShip.name, fleetShip.classKey);
+  const tracks = deepClone(def.damage.tracks);
   return {
     classKey: fleetShip.classKey,
     name: generatedName,
@@ -120,7 +157,11 @@ function toInstanceShip(fleetShip: FleetShipRef, def: GenericShipClass): FleetIn
     heading: fleetShip.heading,
     speed: fleetShip.speed,
     status: fleetShip.status,
-    damage: deepClone(def.damage),
+    damage: {
+      total: countTrackBoxes(tracks),
+      hits: countTrackHits(tracks),
+      tracks,
+    },
     drive: {
       thrust: def.thrust,
       status: 1,
@@ -132,6 +173,7 @@ function toInstanceShip(fleetShip: FleetShipRef, def: GenericShipClass): FleetIn
       arcs: deepClone(weapon.arcs),
       status: 1,
     })),
+    fighters: toFighterGroups(def.fighters?.capacity),
   };
 }
 
@@ -220,4 +262,3 @@ main().catch((error: unknown) => {
   console.error(`Generation failed: ${message}`);
   process.exit(1);
 });
-

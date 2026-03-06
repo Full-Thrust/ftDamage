@@ -1,9 +1,11 @@
 const fs = require("fs");
 const path = require("path");
+const http = require("http");
 
 const repoRoot = path.resolve(__dirname, "..");
 const generatedDir = path.join(repoRoot, "generated");
 const outputFile = path.join(__dirname, "fleet.html");
+const defaultPort = 4173;
 
 function escapeHtml(value) {
   return String(value)
@@ -62,10 +64,6 @@ function renderField(label, value) {
 
 function isShipInstance(value) {
   return Boolean(value && typeof value === "object" && value.classKey && value.position && value.damage);
-}
-
-function isFleetRecord(value) {
-  return Boolean(value && typeof value === "object" && Array.isArray(value.ships));
 }
 
 function renderShipContent(ship) {
@@ -132,102 +130,143 @@ function renderShipCard(filePath, ship) {
   ].join("\n");
 }
 
-function renderFleetRecord(filePath, fleet) {
-  const rel = path.relative(repoRoot, filePath).replace(/\\/g, "/");
-  const ships = Array.isArray(fleet.ships) ? fleet.ships : [];
+function buildFleetSections(jsonFiles) {
+  let shipCount = 0;
+  const shipsByFleet = new Map();
+  const errors = [];
 
-  const shipList = ships
-    .map((ship) => {
-      return [
-        "<details class=\"fleet-ship\">",
-        `  <summary>${escapeHtml(ship.name || "Unnamed Ship")} (${escapeHtml(ship.classKey || "Unknown")})</summary>`,
-        renderShipContent(ship),
-        "</details>"
-      ].join("\n");
-    })
-    .join("\n\n");
-
-  return [
-    "<details>",
-    `  <summary>Fleet ${escapeHtml(fleet.name || "Unknown")} (${ships.length} ships)</summary>`,
-    "  <div class=\"path\">",
-    `    Source: ${escapeHtml(rel)}`,
-    "  </div>",
-    "  <section class=\"grid\">",
-    renderField("Fleet Name", fleet.name || "-"),
-    renderField("Source Fleet File", fleet.sourceFleetFile || "-"),
-    renderField("Ship Count", ships.length),
-    "  </section>",
-    shipList || "  <div class=\"meta\">No ships listed.</div>",
-    "</details>"
-  ].join("\n");
-}
-
-const jsonFiles = walkJsonFiles(generatedDir).sort((a, b) => a.localeCompare(b));
-
-let shipCount = 0;
-let fleetCount = 0;
-
-const sections = jsonFiles
-  .map((filePath) => {
+  for (const filePath of jsonFiles) {
     try {
       const raw = fs.readFileSync(filePath, "utf8");
       const parsed = JSON.parse(raw);
 
-      if (isFleetRecord(parsed)) {
-        fleetCount += 1;
-        shipCount += Array.isArray(parsed.ships) ? parsed.ships.length : 0;
-        return renderFleetRecord(filePath, parsed);
-      }
-
-      if (isShipInstance(parsed)) {
-        shipCount += 1;
-        return renderShipCard(filePath, parsed);
+      if (!isShipInstance(parsed)) {
+        continue;
       }
 
       const rel = path.relative(repoRoot, filePath).replace(/\\/g, "/");
-      return `<details><summary>${escapeHtml(rel)}</summary><div class=\"error\">JSON format not recognized as ship or fleet record.</div></details>`;
+      const parts = rel.split("/");
+      if (parts.length < 3 || parts[0] !== "generated") {
+        continue;
+      }
+
+      const fleetFolder = parts[1];
+      if (!fleetFolder) {
+        continue;
+      }
+
+      if (!shipsByFleet.has(fleetFolder)) {
+        shipsByFleet.set(fleetFolder, []);
+      }
+
+      shipsByFleet.get(fleetFolder).push({ filePath, ship: parsed });
+      shipCount += 1;
     } catch (err) {
       const rel = path.relative(repoRoot, filePath).replace(/\\/g, "/");
-      return `<details><summary>${escapeHtml(rel)}</summary><div class=\"error\">Failed to read JSON: ${escapeHtml(err.message || String(err))}</div></details>`;
+      errors.push(
+        `<details><summary>${escapeHtml(rel)}</summary><div class=\"error\">Failed to read JSON: ${escapeHtml(err.message || String(err))}</div></details>`
+      );
     }
-  })
-  .join("\n\n");
+  }
 
-const generatedAt = new Date().toISOString();
-const html = [
-  "<!doctype html>",
-  "<html lang=\"en\">",
-  "<head>",
-  "  <meta charset=\"utf-8\" />",
-  "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />",
-  "  <title>Fleet Browser View</title>",
-  "  <style>",
-  "    body { font-family: Segoe UI, Arial, sans-serif; margin: 20px; background: #f4f6f8; color: #1f2937; }",
-  "    h1 { margin: 0 0 8px; }",
-  "    .meta { margin: 0 0 16px; color: #374151; }",
-  "    details { background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }",
-  "    details.fleet-ship { margin: 10px 0 0; background: #fbfdff; }",
-  "    summary { cursor: pointer; font-weight: 700; color: #111827; }",
-  "    .path { margin-top: 8px; font-size: 12px; color: #6b7280; }",
-  "    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 14px; margin-top: 10px; }",
-  "    .field { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px; }",
-  "    .label { font-weight: 700; color: #111827; }",
-  "    h3 { margin: 12px 0 8px; font-size: 14px; }",
-  "    table { width: 100%; border-collapse: collapse; font-size: 13px; }",
-  "    th, td { border: 1px solid #d1d5db; padding: 6px 8px; text-align: left; }",
-  "    th { background: #eef2f7; }",
-  "    .error { margin-top: 8px; color: #991b1b; font-weight: 600; }",
-  "  </style>",
-  "</head>",
-  "<body>",
-  "  <h1>Generated Fleet Instances</h1>",
-  `  <p class=\"meta\">JSON files: ${jsonFiles.length} | Fleet records: ${fleetCount} | Ship records shown: ${shipCount} | Generated at: ${generatedAt}</p>`,
-  sections || "  <p class=\"meta\">No JSON files found under generated/.</p>",
-  "</body>",
-  "</html>",
-  ""
-].join("\n");
+  const fleetSections = Array.from(shipsByFleet.entries())
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([fleetFolder, entries]) => {
+      const shipList = entries
+        .sort((a, b) => a.filePath.localeCompare(b.filePath))
+        .map((entry) => renderShipCard(entry.filePath, entry.ship))
+        .join("\n\n");
 
-fs.writeFileSync(outputFile, html, "utf8");
-console.log(`Wrote ${outputFile} from ${jsonFiles.length} JSON file(s).`);
+      return [
+        "<section class=\"fleet-block\">",
+        `  <h2>Fleet ${escapeHtml(String(fleetFolder).toUpperCase())} (${entries.length} ships)</h2>`,
+        shipList || "  <div class=\"meta\">No ships listed.</div>",
+        "</section>"
+      ].join("\n");
+    });
+
+  return {
+    sections: [...fleetSections, ...errors].join("\n\n"),
+    fleetCount: shipsByFleet.size,
+    shipCount,
+  };
+}
+
+function buildFleetHtml() {
+  const jsonFiles = walkJsonFiles(generatedDir).sort((a, b) => a.localeCompare(b));
+  const fleetView = buildFleetSections(jsonFiles);
+  const generatedAt = new Date().toISOString();
+
+  return [
+    "<!doctype html>",
+    "<html lang=\"en\">",
+    "<head>",
+    "  <meta charset=\"utf-8\" />",
+    "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />",
+    "  <title>Fleet Browser View</title>",
+    "  <style>",
+    "    body { font-family: Segoe UI, Arial, sans-serif; margin: 20px; background: #f4f6f8; color: #1f2937; }",
+    "    h1 { margin: 0 0 8px; }",
+    "    h2 { margin: 16px 0 8px; font-size: 20px; color: #111827; }",
+    "    .meta { margin: 0 0 16px; color: #374151; }",
+    "    details { background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }",
+    "    details.fleet-ship { margin: 10px 0 0; background: #fbfdff; }",
+    "    .fleet-block { margin: 0 0 16px; }",
+    "    summary { cursor: pointer; font-weight: 700; color: #111827; }",
+    "    .path { margin-top: 8px; font-size: 12px; color: #6b7280; }",
+    "    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 14px; margin-top: 10px; }",
+    "    .field { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px; }",
+    "    .label { font-weight: 700; color: #111827; }",
+    "    h3 { margin: 12px 0 8px; font-size: 14px; }",
+    "    table { width: 100%; border-collapse: collapse; font-size: 13px; }",
+    "    th, td { border: 1px solid #d1d5db; padding: 6px 8px; text-align: left; }",
+    "    th { background: #eef2f7; }",
+    "    .error { margin-top: 8px; color: #991b1b; font-weight: 600; }",
+    "  </style>",
+    "</head>",
+    "<body>",
+    "  <h1>Generated Fleet Instances</h1>",
+    `  <p class=\"meta\">JSON files: ${jsonFiles.length} | Fleet records: ${fleetView.fleetCount} | Ship records shown: ${fleetView.shipCount} | Generated at: ${generatedAt}</p>`,
+    fleetView.sections || "  <p class=\"meta\">No JSON files found under generated/.</p>",
+    "</body>",
+    "</html>",
+    ""
+  ].join("\n");
+}
+
+function writeStaticFile() {
+  const html = buildFleetHtml();
+  fs.writeFileSync(outputFile, html, "utf8");
+  console.log(`Wrote ${outputFile} from generated/ data.`);
+}
+
+function startServer(port) {
+  const server = http.createServer((req, res) => {
+    const urlPath = (req.url || "/").split("?")[0];
+
+    if (urlPath !== "/" && urlPath !== "/fleet") {
+      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      res.end("Not Found");
+      return;
+    }
+
+    const html = buildFleetHtml();
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
+    res.end(html);
+  });
+
+  server.listen(port, "127.0.0.1", () => {
+    console.log(`Fleet page server running at http://127.0.0.1:${port}/fleet`);
+    console.log("Refresh the browser after editing generated ship JSON files.");
+  });
+}
+
+const args = process.argv.slice(2);
+if (args.includes("--serve")) {
+  const portArg = args.find((arg) => arg.startsWith("--port="));
+  const parsedPort = portArg ? Number(portArg.split("=")[1]) : defaultPort;
+  const port = Number.isInteger(parsedPort) && parsedPort > 0 ? parsedPort : defaultPort;
+  startServer(port);
+} else {
+  writeStaticFile();
+}

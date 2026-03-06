@@ -10,6 +10,7 @@
   "status": 1,
   "damage": {
     "total": 6,
+    "hits": 0,
     "tracks": [
       [
         1,
