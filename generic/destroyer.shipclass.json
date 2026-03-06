@@ -1,0 +1,54 @@
+{
+  "classKey": "DESTROYER",
+  "name": "Destroyer",
+  "thrust": 6,
+  "damage": {
+    "total": 8,
+    "tracks": [
+      [
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "firecons": [
+    1
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "C",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ]
+    }
+  ]
+}

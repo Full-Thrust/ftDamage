@@ -1,0 +1,81 @@
+{
+  "classKey": "ESCORT_CRUISER",
+  "name": "Escort Cruiser",
+  "thrust": 6,
+  "damage": {
+    "total": 14,
+    "tracks": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "firecons": [
+    1,
+    1
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "A"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "A"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "S",
+        "A"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "S",
+        "A"
+      ]
+    }
+  ]
+}

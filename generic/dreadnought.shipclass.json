@@ -1,0 +1,145 @@
+{
+  "classKey": "DREADNOUGHT",
+  "name": "Dreadnought",
+  "thrust": 2,
+  "damage": {
+    "total": 28,
+    "tracks": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "firecons": [
+    1,
+    1,
+    1
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "S"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "S"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ]
+    }
+  ],
+  "fighters": {
+    "capacity": 6
+  }
+}

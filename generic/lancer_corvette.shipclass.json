@@ -1,0 +1,33 @@
+{
+  "classKey": "LANCER_CORVETTE",
+  "name": "Lancer / Corvette",
+  "thrust": 8,
+  "damage": {
+    "total": 4,
+    "tracks": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ]
+  },
+  "firecons": [
+    1
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S",
+        "A"
+      ]
+    }
+  ]
+}

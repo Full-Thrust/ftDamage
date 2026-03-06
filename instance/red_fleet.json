@@ -1,0 +1,39 @@
+{
+  "fleetId": "RED_FLEET_ALPHA",
+  "side": "RED",
+  "ships": [
+    {
+      "classKey": "LIGHT_CRUISER",
+      "name": "ISS Redoubtable",
+      "position": {
+        "xMm": 500,
+        "yMm": 2500
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "DESTROYER",
+      "name": "ISS Valiant",
+      "position": {
+        "xMm": 500,
+        "yMm": 2200
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "FRIGATE",
+      "name": "ISS Arrow",
+      "position": {
+        "xMm": 500,
+        "yMm": 2800
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1
+    }
+  ]
+}

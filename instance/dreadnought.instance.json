@@ -1,0 +1,169 @@
+{
+  "classKey": "DREADNOUGHT",
+  "name": "ISS Dreadnought",
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "heading": 12,
+  "speed": 0,
+  "status": 1,
+  "damage": {
+    "total": 28,
+    "tracks": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 2,
+    "status": 1
+  },
+  "firecons": [
+    {
+      "status": 1
+    },
+    {
+      "status": 1
+    },
+    {
+      "status": 1
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "S"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "S"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 1
+    }
+  ]
+}

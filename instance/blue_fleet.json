@@ -1,0 +1,39 @@
+{
+  "fleetId": "BLUE_FLEET_SIGMA",
+  "side": "BLUE",
+  "ships": [
+    {
+      "classKey": "HEAVY_CRUISER",
+      "name": "HMS Indomitable",
+      "position": {
+        "xMm": 4500,
+        "yMm": 2500
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "DESTROYER",
+      "name": "HMS Resolute",
+      "position": {
+        "xMm": 4500,
+        "yMm": 2200
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    },
+    {
+      "classKey": "FRIGATE",
+      "name": "HMS Swift",
+      "position": {
+        "xMm": 4500,
+        "yMm": 2800
+      },
+      "heading": 9,
+      "speed": 0,
+      "status": 1
+    }
+  ]
+}

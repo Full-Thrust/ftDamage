@@ -1,0 +1,167 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Full Thrust 1E Ship Instance",
+  "type": "object",
+  "required": [
+    "classKey",
+    "name",
+    "position",
+    "heading",
+    "speed",
+    "status",
+    "damage",
+    "drive",
+    "firecons",
+    "weapons"
+  ],
+  "properties": {
+    "classKey": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "position": {
+      "type": "object",
+      "required": [
+        "x",
+        "y"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      }
+    },
+    "heading": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "speed": {
+      "type": "number"
+    },
+    "status": {
+      "type": "integer",
+      "enum": [
+        0,
+        1,
+        2
+      ],
+      "description": "0=DESTROYED, 1=OK, 2=DAMAGED"
+    },
+    "damage": {
+      "type": "object",
+      "required": [
+        "total",
+        "tracks"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tracks": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ]
+            }
+          }
+        }
+      }
+    },
+    "drive": {
+      "type": "object",
+      "required": [
+        "thrust",
+        "status"
+      ],
+      "properties": {
+        "thrust": {
+          "type": "number",
+          "minimum": 0
+        },
+        "status": {
+          "type": "integer",
+          "enum": [
+            0,
+            1,
+            2
+          ],
+          "description": "0=destroyed, 1=undamaged, 2=impaired"
+        }
+      }
+    },
+    "firecons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ]
+          }
+        }
+      }
+    },
+    "weapons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "class",
+          "arcs",
+          "status"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "class": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ]
+          },
+          "arcs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "F",
+                "P",
+                "S",
+                "A"
+              ]
+            }
+          },
+          "status": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ]
+          }
+        }
+      }
+    }
+  }
+}

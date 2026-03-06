@@ -1,0 +1,17 @@
+{
+  "classKey": "SCOUT_COURIER",
+  "name": "Scout / Courier",
+  "thrust": 8,
+  "damage": {
+    "total": 2,
+    "tracks": [[1], [1]]
+  },
+  "firecons": [1],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "C",
+      "arcs": ["F", "P", "S", "A"]
+    }
+  ]
+}

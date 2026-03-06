@@ -1,0 +1,44 @@
+{
+  "classKey": "SCOUT_COURIER",
+  "name": "ISS Scout / Courier",
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "heading": 12,
+  "speed": 0,
+  "status": 1,
+  "damage": {
+    "total": 2,
+    "tracks": [
+      [
+        1
+      ],
+      [
+        1
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 8,
+    "status": 1
+  },
+  "firecons": [
+    {
+      "status": 1
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "C",
+      "arcs": [
+        "F",
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 1
+    }
+  ]
+}

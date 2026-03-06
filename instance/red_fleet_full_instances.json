@@ -1,0 +1,176 @@
+{
+  "fleetId": "RED_FLEET_ALPHA",
+  "side": "RED",
+  "ships": [
+    {
+      "classKey": "LIGHT_CRUISER",
+      "name": "ISS Redoubtable",
+      "thrust": 6,
+      "damage": {
+        "total": 12,
+        "tracks": [
+          [1, 1, 1, 1],
+          [1, 1, 1, 1],
+          [1, 1, 1, 1]
+        ]
+      },
+      "firecons": [1, 1],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "A",
+          "arcs": ["F", "P", "S"]
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": ["F", "P", "A"]
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": ["F", "S", "A"]
+        }
+      ],
+      "position": {
+        "xMm": 500,
+        "yMm": 2500
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "systems": {
+        "drives": {
+          "status": 1
+        },
+        "firecons": [
+          {
+            "status": 1
+          },
+          {
+            "status": 1
+          }
+        ],
+        "weapons": [
+          {
+            "status": 1
+          },
+          {
+            "status": 1
+          },
+          {
+            "status": 1
+          }
+        ]
+      }
+    },
+    {
+      "classKey": "DESTROYER",
+      "name": "ISS Valiant",
+      "thrust": 6,
+      "damage": {
+        "total": 8,
+        "tracks": [
+          [1, 1, 1, 1],
+          [1, 1, 1, 1]
+        ]
+      },
+      "firecons": [1],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": ["F", "P", "S"]
+        },
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": ["F", "P", "S"]
+        },
+        {
+          "type": "BEAM",
+          "class": "C",
+          "arcs": ["P", "S", "A"]
+        }
+      ],
+      "position": {
+        "xMm": 500,
+        "yMm": 2200
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "systems": {
+        "drives": {
+          "status": 1
+        },
+        "firecons": [
+          {
+            "status": 1
+          }
+        ],
+        "weapons": [
+          {
+            "status": 1
+          },
+          {
+            "status": 1
+          },
+          {
+            "status": 1
+          }
+        ]
+      }
+    },
+    {
+      "classKey": "FRIGATE",
+      "name": "ISS Arrow",
+      "thrust": 6,
+      "damage": {
+        "total": 6,
+        "tracks": [
+          [1, 1, 1],
+          [1, 1, 1]
+        ]
+      },
+      "firecons": [1],
+      "weapons": [
+        {
+          "type": "BEAM",
+          "class": "B",
+          "arcs": ["F", "P", "S"]
+        },
+        {
+          "type": "BEAM",
+          "class": "C",
+          "arcs": ["P", "S", "A"]
+        }
+      ],
+      "position": {
+        "xMm": 500,
+        "yMm": 2800
+      },
+      "heading": 3,
+      "speed": 0,
+      "status": 1,
+      "systems": {
+        "drives": {
+          "status": 1
+        },
+        "firecons": [
+          {
+            "status": 1
+          }
+        ],
+        "weapons": [
+          {
+            "status": 1
+          },
+          {
+            "status": 1
+          }
+        ]
+      }
+    }
+  ]
+}

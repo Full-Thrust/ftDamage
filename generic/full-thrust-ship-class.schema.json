@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Full Thrust 1E Ship Class",
+  "type": "object",
+  "required": [
+    "classKey",
+    "name",
+    "thrust",
+    "damage",
+    "firecons",
+    "weapons"
+  ],
+  "properties": {
+    "classKey": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "thrust": {
+      "type": "number",
+      "minimum": 0
+    },
+    "damage": {
+      "type": "object",
+      "required": [
+        "total",
+        "tracks"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tracks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "integer",
+              "enum": [
+                1
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "firecons": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "enum": [
+          1
+        ]
+      }
+    },
+    "weapons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "class",
+          "arcs"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "BEAM"
+            ]
+          },
+          "class": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ]
+          },
+          "arcs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": [
+                "F",
+                "P",
+                "S",
+                "A"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "fighters": {
+      "type": "object",
+      "required": [
+        "capacity"
+      ],
+      "properties": {
+        "capacity": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

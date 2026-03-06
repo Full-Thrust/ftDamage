@@ -1,0 +1,86 @@
+{
+  "classKey": "CARRIER",
+  "name": "Carrier",
+  "thrust": 2,
+  "damage": {
+    "total": 24,
+    "tracks": [
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "firecons": [
+    1,
+    1,
+    1
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "A"
+      ]
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "S",
+        "A"
+      ]
+    }
+  ],
+  "fighters": {
+    "capacity": 18
+  }
+}
