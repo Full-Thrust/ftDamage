@@ -13,7 +13,7 @@
 ## Reference Docs
 
 - `docs/FullThrustFirstEdition.md`: project rules and canonical domain notes.
-- `docs/FullThrustFirstEdition.md`: is known as `1E`.
+- `docs/FullThrustFirstEdition.md`: is known as `1E` and `FT1E`.
 - `full-thrust-digital-engine-spec.md` abstracted specification known as `spec`
 
 ## Reference Usage Rules
