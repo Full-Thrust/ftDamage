@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shipclass Validator"
+  short_description: "Validate and repair shipclass schema data."
+  default_prompt: "Use $shipclass-validator to validate and fix Full Thrust shipclass JSON files with minimal edits."
