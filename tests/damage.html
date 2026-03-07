@@ -8,7 +8,8 @@
     body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; background: #f5f7fb; color: #1f2937; }
     h1 { margin: 0 0 8px; }
     .meta { margin-bottom: 12px; color: #374151; }
-    .controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 16px; }
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 16px; align-items: center; }
+    .controls label { display: inline-flex; align-items: center; line-height: 1; font-weight: 600; color: #1f2937; }
     button {
       border: 0;
       border-radius: 8px;
@@ -20,6 +21,16 @@
     }
     button.secondary { background: #374151; }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .percent-input {
+      width: 84px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 9px 10px;
+      font-size: 14px;
+      line-height: 1;
+      background: #fff;
+      color: #111827;
+    }
     .summary { padding: 12px; border-radius: 8px; margin-bottom: 16px; font-weight: 600; }
     .summary.pass { background: #e8f7ed; color: #14532d; border: 1px solid #86efac; }
     .summary.fail { background: #fdecec; color: #7f1d1d; border: 1px solid #fca5a5; }
@@ -34,19 +45,21 @@
 </head>
 <body>
   <h1>FT1E Damage Runner</h1>
-  <div class="meta">Pick your repo root or <code>generated/</code> folder, then apply random FT1E damage and overwrite JSON files in place.</div>
+  <div class="meta">Pick your repo root or <code>generated/</code> folder, then apply FT1E damage and overwrite JSON files in place.</div>
 
   <div class="controls">
-    <button id="pick-folder">Choose Folder (Read/Write)</button>
-    <button id="apply-damage" disabled>Apply Half-Total Damage + Threshold Checks</button>
-    <button id="reset-fleet" disabled>Reset Fleet To Pristine</button>
-    <button id="rerun-tests" class="secondary">Re-run Logic Tests</button>
+    <button id="pick-folder" type="button">Choose Folder (Read/Write)</button>
+    <label for="damage-percent">Damage %</label>
+    <input id="damage-percent" class="percent-input" type="number" min="0" max="100" step="1" value="30" />
+    <button id="apply-damage" type="button" disabled>Apply % Damage</button>
+    <button id="reset-fleet" type="button" disabled>Reset Fleet To Pristine</button>
+    <button id="rerun-tests" type="button" class="secondary">Re-run Logic Tests</button>
   </div>
 
   <div id="folder-summary" class="summary info">No folder selected.</div>
 
   <h2 class="section-title">Logic Test Results</h2>
-  <div id="test-summary" class="summary info">Running tests...</div>
+  <div id="test-summary" class="summary info">Logic tests are idle. Click Re-run Logic Tests to run them.</div>
   <div id="test-results"></div>
 
   <h2 class="section-title">Run Output</h2>

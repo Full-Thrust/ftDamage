@@ -1,6 +1,7 @@
 (function () {
   var folderBtn = document.getElementById("pick-folder");
   var applyBtn = document.getElementById("apply-damage");
+  var damagePercentInput = document.getElementById("damage-percent");
   var resetBtn = document.getElementById("reset-fleet");
   var rerunTestsBtn = document.getElementById("rerun-tests");
 
@@ -11,6 +12,7 @@
   var runResultsEl = document.getElementById("run-results");
 
   var generatedDirHandle = null;
+  var lastPickedHandle = null;
   var DB_NAME = "ftdamage-folder-memory";
   var STORE_NAME = "handles";
   var HANDLE_KEY = "last-generated-folder";
@@ -85,6 +87,22 @@
     }
 
     return Number.isFinite(fallback) ? fallback : 0;
+  }
+
+  function clampPercent(value) {
+    if (!Number.isFinite(value)) return 30;
+    if (value < 0) return 0;
+    if (value > 100) return 100;
+    return value;
+  }
+
+  function readDamagePercent() {
+    var parsed = Number(damagePercentInput && damagePercentInput.value);
+    var clamped = clampPercent(parsed);
+    if (damagePercentInput) {
+      damagePercentInput.value = String(clamped);
+    }
+    return clamped;
   }
 
   function countCompletedRows(tracks) {
@@ -266,7 +284,7 @@
     return out;
   }
 
-  function applyHalfTotalDamageToShip(ship) {
+  function applyPercentDamageToShip(ship, damagePercent) {
     if (!ship || typeof ship !== "object" || !ship.damage) {
       return { changed: false, reason: "no-damage-structure" };
     }
@@ -283,7 +301,7 @@
 
     var prevTracks = cloneTracks(tracks);
     var prevDamage = countDestroyedBoxes(prevTracks);
-    var requested = Math.ceil(totalCapacity / 2);
+    var requested = Math.round(totalCapacity * (damagePercent / 100));
     var applied = applyDamageToTracksInOrder(tracks, requested);
     var nextDamage = countDestroyedBoxes(tracks);
     ship.damage.total = totalCapacity;
@@ -303,6 +321,7 @@
     return {
       changed: applied > 0 || thresholdReports.length > 0,
       totalCapacity: totalCapacity,
+      damagePercent: damagePercent,
       hits: nextDamage,
       category: category,
       requestedDamage: requested,
@@ -500,7 +519,15 @@
     }
 
     try {
-      var picked = await window.showDirectoryPicker({ mode: "readwrite" });
+      var pickerOptions = { mode: "readwrite" };
+      if (generatedDirHandle) {
+        pickerOptions.startIn = generatedDirHandle;
+      } else if (lastPickedHandle) {
+        pickerOptions.startIn = lastPickedHandle;
+      }
+
+      var picked = await window.showDirectoryPicker(pickerOptions);
+      lastPickedHandle = picked;
       var resolved = await resolveGeneratedDir(picked);
 
       if (!resolved) {
@@ -574,7 +601,8 @@
       return;
     }
 
-    setRunSummary("info", "Applying FT1E damage... please wait.");
+    var damagePercent = readDamagePercent();
+    setRunSummary("info", "Applying " + damagePercent + "% FT1E damage... please wait.");
 
     var fleetHandles;
     try {
@@ -612,7 +640,7 @@
 
         try {
           var ship = await readJsonFile(shipFile.fileHandle);
-          var report = applyHalfTotalDamageToShip(ship);
+          var report = applyPercentDamageToShip(ship, damagePercent);
 
           if (report.reason) {
             addRunRow("fail", fleet.fleetName + "/" + shipFile.fileName + " skipped: " + report.reason);
@@ -626,7 +654,7 @@
 
           var damageLine = [
             fleet.fleetName + "/" + shipFile.fileName,
-            "damage " + report.prevDamage + "->" + report.nextDamage + " (applied " + report.appliedDamage + " of requested " + report.requestedDamage + ")",
+            "damage " + report.prevDamage + "->" + report.nextDamage + " (applied " + report.appliedDamage + " of requested " + report.requestedDamage + " @ " + report.damagePercent + "%)",
             "capacity=" + report.totalCapacity,
             "hits=" + report.hits,
             "category=" + report.category,
@@ -844,6 +872,7 @@
     if (!window.showDirectoryPicker || !window.indexedDB) return;
     var saved = await loadLastPickedHandle();
     if (!saved) return;
+    lastPickedHandle = saved;
     var granted = await hasReadWritePermission(saved);
     if (!granted) return;
     var resolved = await resolveGeneratedDir(saved);
@@ -851,5 +880,6 @@
     await activateResolvedHandle(resolved);
   })();
 
-  runSelfTests();
+  testSummaryEl.className = "summary info";
+  testSummaryEl.textContent = "Logic tests are idle. Click Re-run Logic Tests to run them.";
 })();
