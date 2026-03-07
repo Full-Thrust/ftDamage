@@ -1,0 +1,70 @@
+{
+  "classKey": "DESTROYER",
+  "name": "Destroyer",
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "heading": 1,
+  "speed": 0,
+  "status": 0,
+  "damage": {
+    "total": 8,
+    "hits": 8,
+    "tracks": [
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 3,
+    "status": 2
+  },
+  "firecons": [
+    {
+      "status": 0
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "C",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 0
+    }
+  ]
+}

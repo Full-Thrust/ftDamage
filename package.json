@@ -9,8 +9,9 @@
   },
   "scripts": {
     "test": "npm run test:unit",
-    "test:unit": "vitest run",
-    "test:unit:watch": "vitest",
+    "test:unit": "vitest run --config vitest.config.mts",
+    "test:unit:watch": "vitest --config vitest.config.mts",
+    "test:ship-sim": "npm run build && node dist/shipDamageSimulationTest.js",
     "test:browser": "echo Open tests/damage.html in Chrome or Edge",
     "test:browser:fleet": "echo Open tests/fleet.html in Chrome or Edge and choose generated/ folder",
     "build": "tsc -p tsconfig.json",

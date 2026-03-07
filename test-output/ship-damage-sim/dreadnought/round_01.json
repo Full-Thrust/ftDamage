@@ -1,0 +1,176 @@
+{
+  "classKey": "DREADNOUGHT",
+  "name": "Dreadnought",
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "heading": 1,
+  "speed": 0,
+  "status": 0,
+  "damage": {
+    "total": 28,
+    "hits": 28,
+    "tracks": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 2,
+    "status": 1
+  },
+  "firecons": [
+    {
+      "status": 0
+    },
+    {
+      "status": 1
+    },
+    {
+      "status": 0
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "S"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "S"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 0
+    }
+  ],
+  "fighters": [
+    {
+      "count": 6,
+      "status": 0
+    }
+  ]
+}

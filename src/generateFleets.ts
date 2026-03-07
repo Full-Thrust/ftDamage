@@ -1,24 +1,7 @@
-﻿import { promises as fs } from "fs";
+import { promises as fs } from "fs";
 import path from "path";
-
-interface GenericShipClass {
-  classKey: string;
-  name: string;
-  thrust: number;
-  damage: {
-    total: number;
-    tracks: number[][];
-  };
-  firecons: number[];
-  weapons: Array<{
-    type: string;
-    class: "A" | "B" | "C";
-    arcs: Array<"F" | "P" | "S" | "A">;
-  }>;
-  fighters?: {
-    capacity: number;
-  };
-}
+import { Ship } from "./model/Ship";
+import { GenericShipClassJson, ShipInstanceJson } from "./model/types";
 
 interface FleetShipRef {
   classKey: string;
@@ -38,42 +21,10 @@ interface FleetFile {
   ships: FleetShipRef[];
 }
 
-interface FleetInstanceShip {
-  classKey: string;
-  name: string;
-  position: {
-    x: number;
-    y: number;
-  };
-  heading: number;
-  speed: number;
-  status: 0 | 1 | 2;
-  damage: {
-    total: number;
-    hits: number;
-    tracks: number[][];
-  };
-  drive: {
-    thrust: number;
-    status: 0 | 1 | 2;
-  };
-  firecons: Array<{ status: 0 | 1 }>;
-  weapons: Array<{
-    type: string;
-    class: "A" | "B" | "C";
-    arcs: Array<"F" | "P" | "S" | "A">;
-    status: 0 | 1;
-  }>;
-  fighters?: Array<{
-    count: number;
-    status: 0 | 1 | 2;
-  }>;
-}
-
 interface FleetInstancesFile {
   name: string;
   sourceFleetFile: string;
-  ships: FleetInstanceShip[];
+  ships: ShipInstanceJson[];
 }
 
 interface ScenarioInput {
@@ -119,75 +70,30 @@ function toFleetSpecificShipName(originalShipName: string, classKey: string): st
   return stripped.length > 0 ? stripped : classKey;
 }
 
-function countTrackBoxes(tracks: number[][]): number {
-  return tracks.reduce((sum, row) => sum + row.length, 0);
-}
-
-function countTrackHits(tracks: number[][]): number {
-  return tracks.reduce((sum, row) => sum + row.filter((cell) => cell === 0).length, 0);
-}
-
-function toFighterGroups(capacity?: number): Array<{ count: number; status: 0 | 1 | 2 }> | undefined {
-  if (!Number.isFinite(capacity) || (capacity ?? 0) <= 0) {
-    return undefined;
-  }
-
-  const groups: Array<{ count: number; status: 0 | 1 | 2 }> = [];
-  let remaining = Math.floor(capacity as number);
-
-  while (remaining > 0) {
-    const groupCount = Math.min(6, remaining);
-    groups.push({
-      count: groupCount,
-      status: 1, // 1=operational, 2=launched, 0=destroyed
-    });
-    remaining -= groupCount;
-  }
-
-  return groups;
-}
-
-function toInstanceShip(fleetShip: FleetShipRef, def: GenericShipClass): FleetInstanceShip {
+function toInstanceShip(fleetShip: FleetShipRef, def: GenericShipClassJson): ShipInstanceJson {
   const generatedName = toFleetSpecificShipName(fleetShip.name, fleetShip.classKey);
-  const tracks = deepClone(def.damage.tracks);
-  return {
-    classKey: fleetShip.classKey,
+  const ship = new Ship(def, {
     name: generatedName,
     position: deepClone(fleetShip.position),
     heading: fleetShip.heading,
     speed: fleetShip.speed,
     status: fleetShip.status,
-    damage: {
-      total: countTrackBoxes(tracks),
-      hits: countTrackHits(tracks),
-      tracks,
-    },
-    drive: {
-      thrust: def.thrust,
-      status: 1,
-    },
-    firecons: def.firecons.map(() => ({ status: 1 })),
-    weapons: def.weapons.map((weapon) => ({
-      type: weapon.type,
-      class: weapon.class,
-      arcs: deepClone(weapon.arcs),
-      status: 1,
-    })),
-    fighters: toFighterGroups(def.fighters?.capacity),
-  };
+  });
+
+  return ship.toJson();
 }
 
-async function readGenericShipClasses(genericDir: string): Promise<Map<string, GenericShipClass>> {
+async function readGenericShipClasses(genericDir: string): Promise<Map<string, GenericShipClassJson>> {
   const entries = await fs.readdir(genericDir, { withFileTypes: true });
   const files = entries
     .filter((entry) => entry.isFile() && entry.name.endsWith(".shipclass.json"))
     .map((entry) => entry.name)
     .sort((a, b) => a.localeCompare(b));
 
-  const defs = new Map<string, GenericShipClass>();
+  const defs = new Map<string, GenericShipClassJson>();
   for (const fileName of files) {
     const fullPath = path.join(genericDir, fileName);
-    const shipClass = await readJsonFile<GenericShipClass>(fullPath);
+    const shipClass = await readJsonFile<GenericShipClassJson>(fullPath);
     defs.set(shipClass.classKey, shipClass);
   }
 
@@ -225,12 +131,12 @@ async function main(): Promise<void> {
     const fleetFromJson = await readJsonFile<FleetFile>(fleetPath);
     assertFleetInput(fleetFromJson, fleetCfg.name, fleetCfg.file);
 
-    const instanceShips = fleetFromJson.ships.map((ship) => {
-      const def = defs.get(ship.classKey);
+    const instanceShips = fleetFromJson.ships.map((shipRef) => {
+      const def = defs.get(shipRef.classKey);
       if (!def) {
-        throw new Error(`Missing generic ship definition for classKey '${ship.classKey}' in fleet '${fleetCfg.name}'`);
+        throw new Error(`Missing generic ship definition for classKey '${shipRef.classKey}' in fleet '${fleetCfg.name}'`);
       }
-      return toInstanceShip(ship, def);
+      return toInstanceShip(shipRef, def);
     });
 
     const fleetInstances: FleetInstancesFile = {
@@ -258,7 +164,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error(`Generation failed: ${message}`);
-  process.exit(1);
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exitCode = 1;
 });

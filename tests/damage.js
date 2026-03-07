@@ -16,6 +16,16 @@
   var DB_NAME = "ftdamage-folder-memory";
   var STORE_NAME = "handles";
   var HANDLE_KEY = "last-generated-folder";
+  var ShipClass = null;
+  var damageProcessor = null;
+
+  if (window.FTShip && typeof window.FTShip.Ship === "function" &&
+      window.FTDamage && typeof window.FTDamage.Ft1eDamageProcessor === "function") {
+    ShipClass = window.FTShip.Ship;
+    damageProcessor = new window.FTDamage.Ft1eDamageProcessor();
+  } else {
+    throw new Error("Ship/damage classes not loaded. Ensure tests/ship.js and tests/damage-engine.js are included before tests/damage.js.");
+  }
 
   function deepEqual(a, b) {
     return JSON.stringify(a) === JSON.stringify(b);
@@ -46,47 +56,7 @@
   }
 
   function applyDamageToTracksInOrder(tracks, points) {
-    var applied = 0;
-
-    for (var p = 0; p < points; p++) {
-      var done = false;
-
-      for (var r = 0; r < tracks.length && !done; r++) {
-        for (var c = 0; c < tracks[r].length; c++) {
-          if (tracks[r][c] === 1) {
-            tracks[r][c] = 0;
-            applied++;
-            done = true;
-            break;
-          }
-        }
-      }
-
-      if (!done) break;
-    }
-
-    return applied;
-  }
-
-  function baseThrustForClass(classKey, fallback) {
-    var table = {
-      SCOUT_COURIER: 8,
-      LANCER_CORVETTE: 8,
-      FRIGATE: 6,
-      DESTROYER: 6,
-      LIGHT_CRUISER: 6,
-      ESCORT_CRUISER: 6,
-      HEAVY_CRUISER: 4,
-      BATTLESHIP: 4,
-      DREADNOUGHT: 2,
-      CARRIER: 2
-    };
-
-    if (classKey && Object.prototype.hasOwnProperty.call(table, classKey)) {
-      return table[classKey];
-    }
-
-    return Number.isFinite(fallback) ? fallback : 0;
+    return damageProcessor.applyHitsToTracks(tracks, points);
   }
 
   function clampPercent(value) {
@@ -105,290 +75,38 @@
     return clamped;
   }
 
-  function countCompletedRows(tracks) {
-    var rows = 0;
-    for (var r = 0; r < tracks.length; r++) {
-      if (!Array.isArray(tracks[r]) || tracks[r].length === 0) continue;
-      var allDestroyed = true;
-      for (var c = 0; c < tracks[r].length; c++) {
-        if (tracks[r][c] !== 0) {
-          allDestroyed = false;
-          break;
-        }
-      }
-      if (allDestroyed) rows++;
-    }
-    return rows;
-  }
-
   function thresholdCrossingsByRowCompletion(prevTracks, nextTracks) {
-    var prevRows = countCompletedRows(prevTracks);
-    var nextRows = countCompletedRows(nextTracks);
-    var hits = [];
-    for (var i = prevRows + 1; i <= nextRows; i++) {
-      hits.push(i);
-    }
-    return hits;
+    var prevHits = countDestroyedBoxes(prevTracks);
+    var nextHits = countDestroyedBoxes(nextTracks);
+    var total = countTrackBoxes(nextTracks);
+    return damageProcessor.thresholdCrossingsByRowCompletion(prevHits, nextHits, total, nextTracks);
   }
 
-  function cloneTracks(tracks) {
-    return tracks.map(function (row) { return row.slice(); });
-  }
-
-  function categoryFromShip(ship) {
-    var firecons = Array.isArray(ship.firecons) ? ship.firecons.length : 0;
-
-    if (firecons <= 1) return "ESCORT";
-    if (firecons === 2) return "CRUISER";
-    return "CAPITAL";
-  }
-
-  function thresholdLossRollMin(category, thresholdIndex) {
-    if (category === "ESCORT") return 4;
-
-    if (category === "CRUISER") {
-      if (thresholdIndex === 1) return 6;
-      return 4;
-    }
-
-    if (thresholdIndex === 1) return 6;
-    if (thresholdIndex === 2) return 5;
-    return 4;
-  }
-
-  function rollD6() {
-    return Math.floor(Math.random() * 6) + 1;
-  }
-
-  function applyDriveHit(drive) {
-    if (!drive || typeof drive !== "object") return "none";
-
-    var status = drive.status;
-
-    if (status === 0) return "disabled";
-
-    if (status === 1) {
-      var currentThrust = Number.isFinite(drive.thrust) ? drive.thrust : 0;
-      drive.thrust = Math.floor(currentThrust / 2);
-      drive.status = drive.thrust > 0 ? 2 : 0;
-      return drive.status === 2 ? "halved" : "disabled";
-    }
-
-    if (status === 2) {
-      drive.thrust = 0;
-      drive.status = 0;
-      return "disabled";
-    }
-
-    return "none";
-  }
-
-  function applyThresholdChecks(ship, category, crossedThresholds) {
-    var weapons = Array.isArray(ship.weapons) ? ship.weapons : [];
-    var firecons = Array.isArray(ship.firecons) ? ship.firecons : [];
-    var fighters = Array.isArray(ship.fighters) ? ship.fighters : [];
-    var drive = ship.drive || {};
-
-    var reports = [];
-
-    for (var i = 0; i < crossedThresholds.length; i++) {
-      var thresholdIndex = crossedThresholds[i];
-      var minRoll = thresholdLossRollMin(category, thresholdIndex);
-      var rolled = 0;
-      var lost = 0;
-      var weaponsLost = 0;
-      var fireconsLost = 0;
-      var fightersLost = 0;
-      var driveLost = 0;
-      var driveResult = "not-rolled";
-
-      for (var w = 0; w < weapons.length; w++) {
-        if (weapons[w] && weapons[w].status === 1) {
-          rolled++;
-          if (rollD6() >= minRoll) {
-            weapons[w].status = 0;
-            lost++;
-            weaponsLost++;
-          }
-        }
-      }
-
-      if (drive && drive.status !== 0) {
-        rolled++;
-        if (rollD6() >= minRoll) {
-          driveResult = applyDriveHit(drive);
-          if (driveResult !== "none") {
-            lost++;
-            driveLost = 1;
-          }
-        } else {
-          driveResult = "survived";
-        }
-      }
-
-      for (var f = 0; f < firecons.length; f++) {
-        if (firecons[f] && firecons[f].status === 1) {
-          rolled++;
-          if (rollD6() >= minRoll) {
-            firecons[f].status = 0;
-            lost++;
-            fireconsLost++;
-          }
-        }
-      }
-
-      for (var g = 0; g < fighters.length; g++) {
-        if (fighters[g] && fighters[g].status === 1) {
-          rolled++;
-          if (rollD6() >= minRoll) {
-            // In this model 1=landed, 0=not landed; mark lost landed group as non-landed.
-            fighters[g].status = 0;
-            lost++;
-            fightersLost++;
-          }
-        }
-      }
-
-      var weaponsDestroyed = weapons.filter(function (w) { return w && w.status === 0; }).length;
-      var fireconsDestroyed = firecons.filter(function (fc) { return fc && fc.status === 0; }).length;
-      var fightersDestroyed = fighters.filter(function (fg) { return fg && fg.status === 0; }).length;
-
-      reports.push({
-        thresholdIndex: thresholdIndex,
-        minRoll: minRoll,
-        rolled: rolled,
-        lost: lost,
-        weaponsLost: weaponsLost,
-        fireconsLost: fireconsLost,
-        fightersLost: fightersLost,
-        driveLost: driveLost,
-        weaponsDestroyed: weaponsDestroyed,
-        fireconsDestroyed: fireconsDestroyed,
-        fightersDestroyed: fightersDestroyed,
-        driveResult: driveResult,
-      });
-    }
-
-    return reports;
-  }
-
-  function normalizeTracks(tracks) {
-    if (!Array.isArray(tracks)) return [];
-    var out = [];
-
-    for (var i = 0; i < tracks.length; i++) {
-      if (!Array.isArray(tracks[i])) continue;
-      out.push(tracks[i].map(function (v) { return v === 0 ? 0 : 1; }));
-    }
-
-    return out;
-  }
-
-  function applyPercentDamageToShip(ship, damagePercent) {
-    if (!ship || typeof ship !== "object" || !ship.damage) {
-      return { changed: false, reason: "no-damage-structure" };
-    }
-
-    var tracks = normalizeTracks(ship.damage.tracks);
-    var totalCapacity = 0;
-    for (var r = 0; r < tracks.length; r++) totalCapacity += tracks[r].length;
-
-    if (!tracks.length || totalCapacity <= 0) {
-      return { changed: false, reason: "invalid-tracks-or-total" };
-    }
-
-    ship.damage.tracks = tracks;
-
-    var prevTracks = cloneTracks(tracks);
-    var prevDamage = countDestroyedBoxes(prevTracks);
-    var requested = Math.round(totalCapacity * (damagePercent / 100));
-    var applied = applyDamageToTracksInOrder(tracks, requested);
-    var nextDamage = countDestroyedBoxes(tracks);
-    ship.damage.total = totalCapacity;
-    ship.damage.hits = nextDamage;
-    if (ship.damage.hits >= ship.damage.total) {
-      ship.status = 0;
-    } else if (ship.damage.hits > 1) {
-      ship.status = 2;
-    } else {
-      ship.status = 1;
-    }
-
-    var category = categoryFromShip(ship);
-    var crossed = thresholdCrossingsByRowCompletion(prevTracks, tracks);
-    var thresholdReports = applyThresholdChecks(ship, category, crossed);
-
+  function applyPercentDamageToShip(rawShip, damagePercent) {
+    var ship = new ShipClass(rawShip);
+    var total = ship.getDamageTotal();
+    var requestedHits = Math.round(total * (damagePercent / 100));
+    var report = damageProcessor.applyHits(ship, requestedHits);
     return {
-      changed: applied > 0 || thresholdReports.length > 0,
-      totalCapacity: totalCapacity,
+      ship: ship.toJson(),
+      changed: report.appliedHits > 0 || report.thresholdReports.length > 0,
+      totalCapacity: report.total,
       damagePercent: damagePercent,
-      hits: nextDamage,
-      category: category,
-      requestedDamage: requested,
-      appliedDamage: applied,
-      prevDamage: prevDamage,
-      nextDamage: nextDamage,
-      crossedThresholds: crossed,
-      thresholdReports: thresholdReports,
+      hits: report.nextHits,
+      category: report.category,
+      requestedDamage: report.requestedHits,
+      appliedDamage: report.appliedHits,
+      prevDamage: report.previousHits,
+      nextDamage: report.nextHits,
+      crossedThresholds: report.crossedThresholds,
+      thresholdReports: report.thresholdReports,
     };
   }
 
-  function resetShipToPristine(ship) {
-    if (!ship || typeof ship !== "object" || !ship.damage) {
-      return { changed: false, reason: "no-damage-structure" };
-    }
-
-    var tracks = normalizeTracks(ship.damage.tracks);
-    if (!tracks.length) {
-      return { changed: false, reason: "invalid-tracks" };
-    }
-
-    for (var r = 0; r < tracks.length; r++) {
-      for (var c = 0; c < tracks[r].length; c++) {
-        tracks[r][c] = 1;
-      }
-    }
-
-    ship.damage.tracks = tracks;
-    ship.damage.total = countTrackBoxes(tracks);
-    ship.damage.hits = 0;
-    ship.status = 1;
-
-    if (!ship.drive || typeof ship.drive !== "object") {
-      ship.drive = { thrust: 0, status: 1 };
-    }
-    ship.drive.thrust = baseThrustForClass(ship.classKey, ship.drive.thrust);
-    ship.drive.status = 1;
-
-    if (Array.isArray(ship.firecons)) {
-      for (var f = 0; f < ship.firecons.length; f++) {
-        if (!ship.firecons[f] || typeof ship.firecons[f] !== "object") {
-          ship.firecons[f] = { status: 1 };
-        } else {
-          ship.firecons[f].status = 1;
-        }
-      }
-    }
-
-    if (Array.isArray(ship.weapons)) {
-      for (var w = 0; w < ship.weapons.length; w++) {
-        if (ship.weapons[w] && typeof ship.weapons[w] === "object") {
-          ship.weapons[w].status = 1;
-        }
-      }
-    }
-
-    if (Array.isArray(ship.fighters)) {
-      for (var g = 0; g < ship.fighters.length; g++) {
-        if (!ship.fighters[g] || typeof ship.fighters[g] !== "object") continue;
-        ship.fighters[g].status = 1; // landed
-        if (!Number.isFinite(ship.fighters[g].count) || ship.fighters[g].count < 1) {
-          ship.fighters[g].count = 6;
-        }
-      }
-    }
-
-    return { changed: true };
+  function resetShipToPristine(rawShip) {
+    var ship = new ShipClass(rawShip);
+    ship.resetToPristine();
+    return { changed: true, ship: ship.toJson() };
   }
 
   function prettyJson(obj) {
@@ -641,6 +359,7 @@
         try {
           var ship = await readJsonFile(shipFile.fileHandle);
           var report = applyPercentDamageToShip(ship, damagePercent);
+          var updatedShip = report.ship;
 
           if (report.reason) {
             addRunRow("fail", fleet.fleetName + "/" + shipFile.fileName + " skipped: " + report.reason);
@@ -648,8 +367,8 @@
             continue;
           }
 
-          await writeJsonFile(shipFile.fileHandle, ship);
-          updatedShipsForAggregate.push(ship);
+          await writeJsonFile(shipFile.fileHandle, updatedShip);
+          updatedShipsForAggregate.push(updatedShip);
           stats.shipsUpdated++;
 
           var damageLine = [
@@ -668,10 +387,10 @@
               var tReport = report.thresholdReports[tr];
               addRunRow(
                 "info",
-                "T" + tReport.thresholdIndex + " | " +
-                  (ship.name || "Unnamed Ship") +
+                  "T" + tReport.thresholdIndex + " | " +
+                  (updatedShip.name || "Unnamed Ship") +
                   " " +
-                  (ship.classKey || "UNKNOWN") +
+                  (updatedShip.classKey || "UNKNOWN") +
                   " | " +
                   fleet.fleetName + "/" + shipFile.fileName +
                   " | " + formatThresholdReport(tReport)
@@ -681,9 +400,9 @@
             addRunRow(
               "info",
               "threshold check | " +
-                (ship.name || "Unnamed Ship") +
+                (updatedShip.name || "Unnamed Ship") +
                 " " +
-                (ship.classKey || "UNKNOWN") +
+                (updatedShip.classKey || "UNKNOWN") +
                 " | " +
                 fleet.fleetName + "/" + shipFile.fileName +
                 " | none crossed"
@@ -753,6 +472,7 @@
         try {
           var ship = await readJsonFile(shipFile.fileHandle);
           var report = resetShipToPristine(ship);
+          var resetShip = report.ship;
 
           if (report.reason) {
             addRunRow("fail", fleet.fleetName + "/" + shipFile.fileName + " skipped: " + report.reason);
@@ -760,14 +480,14 @@
             continue;
           }
 
-          await writeJsonFile(shipFile.fileHandle, ship);
-          updatedShipsForAggregate.push(ship);
+          await writeJsonFile(shipFile.fileHandle, resetShip);
+          updatedShipsForAggregate.push(resetShip);
           stats.shipsReset++;
           addRunRow(
             "pass",
             fleet.fleetName + "/" + shipFile.fileName +
-              " reset | " + (ship.name || "Unnamed Ship") + " " + (ship.classKey || "UNKNOWN") +
-              " | total=" + ship.damage.total + " hits=" + ship.damage.hits
+              " reset | " + (resetShip.name || "Unnamed Ship") + " " + (resetShip.classKey || "UNKNOWN") +
+              " | total=" + resetShip.damage.total + " hits=" + resetShip.damage.hits
           );
         } catch (err) {
           var msg = err && err.message ? err.message : String(err);
@@ -809,11 +529,22 @@
       {
         name: "drive hit transitions 1 -> 2 -> 0",
         run: function () {
-          var d = { thrust: 6, status: 1 };
-          expectEqual(applyDriveHit(d), "halved", "drive first hit label");
-          expectEqual(d, { thrust: 3, status: 2 }, "drive first hit state");
-          expectEqual(applyDriveHit(d), "disabled", "drive second hit label");
-          expectEqual(d, { thrust: 0, status: 0 }, "drive second hit state");
+          var ship = new ShipClass({
+            classKey: "TEST_SHIP",
+            name: "Test",
+            position: { x: 0, y: 0 },
+            heading: 1,
+            speed: 0,
+            status: 1,
+            damage: { total: 2, hits: 0, tracks: [[1, 1]] },
+            drive: { thrust: 6, status: 1 },
+            firecons: [{ status: 1 }],
+            weapons: [],
+          });
+          expectEqual(ship.applyDriveCriticalHit(), "halved", "drive first hit label");
+          expectEqual({ thrust: ship.getDriveThrust(), status: ship.getDriveStatus() }, { thrust: 3, status: 2 }, "drive first hit state");
+          expectEqual(ship.applyDriveCriticalHit(), "disabled", "drive second hit label");
+          expectEqual({ thrust: ship.getDriveThrust(), status: ship.getDriveStatus() }, { thrust: 0, status: 0 }, "drive second hit state");
         }
       },
       {

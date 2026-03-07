@@ -1,0 +1,47 @@
+{
+  "classKey": "LANCER_CORVETTE",
+  "name": "Lancer / Corvette",
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "heading": 1,
+  "speed": 0,
+  "status": 0,
+  "damage": {
+    "total": 4,
+    "hits": 4,
+    "tracks": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        0
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 0,
+    "status": 0
+  },
+  "firecons": [
+    {
+      "status": 0
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 0
+    }
+  ]
+}

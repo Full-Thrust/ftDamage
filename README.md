@@ -35,3 +35,7 @@ git checkout main
 git pull
 ./scripts/bootstrap.sh
 ```
+
+## References
+
+[Rules for Full Thrust First Edition: FTE1: E1](/docs/FullThrustFirstEdition.md)
