@@ -53,12 +53,10 @@
   <p id="meta" class="meta">Load files from your local <code>generated/</code> folder.</p>
 
   <div class="controls">
-    <label class="file-label">
-      Choose generated folder
-      <input id="dirPicker" type="file" webkitdirectory directory multiple accept=".json" />
-    </label>
-    <button id="rerender" class="btn" type="button">Re-render Current Selection</button>
-    <span class="hint">Pick the <code>generated/</code> directory (or any parent containing it).</span>
+    <button id="select-fleet" class="btn" type="button">Select Fleet</button>
+    <button id="rerender" class="btn" type="button">Render Fleet</button>
+    <input id="dirPicker" type="file" webkitdirectory directory multiple accept=".json" style="display:none" />
+    <span class="hint">Select your <code>generated/</code> folder once, then use Render Fleet to refresh.</span>
   </div>
 
   <main id="content">
@@ -68,6 +66,7 @@
   <script>
     const metaEl = document.getElementById("meta");
     const contentEl = document.getElementById("content");
+    const selectFleetBtn = document.getElementById("select-fleet");
     const dirPicker = document.getElementById("dirPicker");
     const rerenderBtn = document.getElementById("rerender");
     const SHIP_STATUS = Object.freeze({
@@ -77,6 +76,10 @@
     });
 
     let currentFiles = [];
+    let selectedGeneratedHandle = null;
+    const HANDLE_DB_NAME = "ftdamage-fleet-db";
+    const HANDLE_STORE_NAME = "handles";
+    const HANDLE_KEY = "generated";
 
     function escapeHtml(value) {
       return String(value)
@@ -215,6 +218,7 @@
       const damage = ship.damage || {};
       const firecons = Array.isArray(ship.firecons) ? ship.firecons : [];
       const weapons = Array.isArray(ship.weapons) ? ship.weapons : [];
+      const fighters = Array.isArray(ship.fighters) ? ship.fighters : [];
       const shipStatus = shipStatusVisual(ship.status);
       const driveStatus = driveStatusVisual(drive.status);
 
@@ -236,6 +240,15 @@
           }).join("\n")
         : '<tr><td colspan="5">No weapons listed</td></tr>';
 
+      const fightersSection = fighters.length
+        ? [
+            "  <section>",
+            "    <h3>Fighter Groups</h3>",
+            `    ${renderFighters(fighters)}`,
+            "  </section>"
+          ].join("\n")
+        : "";
+
       return [
         "  <section class=\"grid\">",
         renderField("Name", ship.name || "-"),
@@ -256,10 +269,7 @@
         "    <h3>Damage Tracks</h3>",
         `    ${renderDamageTracks(damage.tracks)}`,
         "  </section>",
-        "  <section>",
-        "    <h3>Fighter Groups</h3>",
-        `    ${renderFighters(ship.fighters)}`,
-        "  </section>",
+        fightersSection,
         "  <section>",
         "    <h3>Weapons</h3>",
         "    <table>",
@@ -267,7 +277,7 @@
         `      <tbody>${weaponRows}</tbody>`,
         "    </table>",
         "  </section>"
-      ].join("\n");
+      ].filter(Boolean).join("\n");
     }
 
     function renderShipCard(sourcePath, ship) {
@@ -287,56 +297,32 @@
       ].join("\n");
     }
 
-    async function parseFleetData(files) {
+    function buildFleetView(records) {
       const shipsByFleet = new Map();
       const errors = [];
       let shipCount = 0;
 
-      for (const file of files) {
-        const rel = (file.webkitRelativePath || file.name).replace(/\\/g, "/");
-        if (!rel.toLowerCase().endsWith(".json")) {
+      for (const record of records) {
+        const rel = String(record && record.relPath ? record.relPath : "");
+        const parsed = record ? record.parsed : null;
+        if (!rel || !rel.toLowerCase().endsWith(".json")) {
+          continue;
+        }
+        if (!isShipInstance(parsed)) {
           continue;
         }
 
-        const parts = rel.split("/");
-        let underGenerated = "";
-        let fleetFolder = "";
-
-        const generatedIndex = parts.lastIndexOf("generated");
-        if (generatedIndex >= 0) {
-          const tail = parts.slice(generatedIndex);
-          if (tail.length !== 3) {
-            continue;
-          }
-          underGenerated = tail.join("/");
-          fleetFolder = tail[1];
-        } else {
-          if (parts.length !== 2) {
-            continue;
-          }
-          underGenerated = `generated/${rel}`;
-          fleetFolder = parts[0];
-        }
-
+        const parts = rel.split("/").filter(Boolean);
+        const fleetFolder = parts.length >= 2 ? parts[parts.length - 2] : "selected";
         if (!fleetFolder) {
           continue;
         }
 
-        try {
-          const text = await file.text();
-          const parsed = JSON.parse(text);
-          if (!isShipInstance(parsed)) {
-            continue;
-          }
-
-          if (!shipsByFleet.has(fleetFolder)) {
-            shipsByFleet.set(fleetFolder, []);
-          }
-          shipsByFleet.get(fleetFolder).push({ source: underGenerated, ship: parsed });
-          shipCount += 1;
-        } catch (err) {
-          errors.push(`<details><summary>${escapeHtml(underGenerated)}</summary><div class=\"error\">Failed to parse JSON: ${escapeHtml(err.message || String(err))}</div></details>`);
+        if (!shipsByFleet.has(fleetFolder)) {
+          shipsByFleet.set(fleetFolder, []);
         }
+        shipsByFleet.get(fleetFolder).push({ source: rel, ship: parsed });
+        shipCount += 1;
       }
 
       const sections = Array.from(shipsByFleet.entries())
@@ -356,11 +342,139 @@
         });
 
       return {
-        jsonFiles: files.filter((f) => (f.webkitRelativePath || f.name).toLowerCase().endsWith(".json")).length,
+        jsonFiles: records.filter((r) => String(r && r.relPath ? r.relPath : "").toLowerCase().endsWith(".json")).length,
         fleetCount: shipsByFleet.size,
         shipCount,
         html: [...sections, ...errors].join("\n\n"),
       };
+    }
+
+    async function parseFleetData(files) {
+      const records = [];
+      const errors = [];
+
+      for (const file of files) {
+        const rel = (file.webkitRelativePath || file.name).replace(/\\/g, "/");
+        if (!rel.toLowerCase().endsWith(".json")) {
+          continue;
+        }
+        try {
+          const text = await file.text();
+          records.push({ relPath: rel, parsed: JSON.parse(text) });
+        } catch (err) {
+          errors.push(`<details><summary>${escapeHtml(rel)}</summary><div class=\"error\">Failed to read or parse JSON: ${escapeHtml(err.message || String(err))}</div></details>`);
+        }
+      }
+
+      const view = buildFleetView(records);
+      if (errors.length) {
+        view.html = [view.html, ...errors].filter(Boolean).join("\n\n");
+      }
+      return view;
+    }
+
+    async function resolveGeneratedHandle(handle) {
+      if (!handle || handle.kind !== "directory") {
+        throw new Error("Invalid directory handle");
+      }
+      if (String(handle.name || "").toLowerCase() === "generated") {
+        return handle;
+      }
+      try {
+        return await handle.getDirectoryHandle("generated");
+      } catch (_err) {
+        return handle;
+      }
+    }
+
+    function openHandleDb() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(HANDLE_DB_NAME, 1);
+        request.onupgradeneeded = () => {
+          const db = request.result;
+          if (!db.objectStoreNames.contains(HANDLE_STORE_NAME)) {
+            db.createObjectStore(HANDLE_STORE_NAME);
+          }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error("IndexedDB open failed"));
+      });
+    }
+
+    async function saveGeneratedHandle(handle) {
+      try {
+        const db = await openHandleDb();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction(HANDLE_STORE_NAME, "readwrite");
+          tx.objectStore(HANDLE_STORE_NAME).put(handle, HANDLE_KEY);
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error || new Error("IndexedDB write failed"));
+        });
+        db.close();
+      } catch (_err) {
+        // Best-effort persistence only.
+      }
+    }
+
+    async function loadGeneratedHandle() {
+      try {
+        const db = await openHandleDb();
+        const handle = await new Promise((resolve, reject) => {
+          const tx = db.transaction(HANDLE_STORE_NAME, "readonly");
+          const request = tx.objectStore(HANDLE_STORE_NAME).get(HANDLE_KEY);
+          request.onsuccess = () => resolve(request.result || null);
+          request.onerror = () => reject(request.error || new Error("IndexedDB read failed"));
+        });
+        db.close();
+        return handle;
+      } catch (_err) {
+        return null;
+      }
+    }
+
+    function isJsonFileName(name) {
+      return String(name || "").toLowerCase().endsWith(".json");
+    }
+
+    async function loadRecordsFromGeneratedHandle(generatedHandle) {
+      const records = [];
+      const errors = [];
+
+      for await (const [fleetName, fleetEntry] of generatedHandle.entries()) {
+        if (!fleetEntry || fleetEntry.kind !== "directory") {
+          continue;
+        }
+        for await (const [fileName, fileEntry] of fleetEntry.entries()) {
+          if (!fileEntry || fileEntry.kind !== "file" || !isJsonFileName(fileName)) {
+            continue;
+          }
+          const relPath = `generated/${fleetName}/${fileName}`;
+          try {
+            const file = await fileEntry.getFile();
+            const text = await file.text();
+            records.push({ relPath, parsed: JSON.parse(text) });
+          } catch (err) {
+            errors.push(`<details><summary>${escapeHtml(relPath)}</summary><div class="error">Failed to read or parse JSON: ${escapeHtml(err.message || String(err))}</div></details>`);
+          }
+        }
+      }
+
+      return { records, errors };
+    }
+
+    async function renderFromDirectoryHandle() {
+      if (!selectedGeneratedHandle) {
+        contentEl.innerHTML = '<p class="meta">No files loaded yet.</p>';
+        return;
+      }
+      const { records, errors } = await loadRecordsFromGeneratedHandle(selectedGeneratedHandle);
+      const result = buildFleetView(records);
+      if (errors.length) {
+        result.html = [result.html, ...errors].filter(Boolean).join("\n\n");
+      }
+      const generatedAt = new Date().toISOString();
+      metaEl.textContent = `Generated folder loaded: ${result.jsonFiles} JSON files | Fleet records: ${result.fleetCount} | Ship records shown: ${result.shipCount} | Rendered at: ${generatedAt}`;
+      contentEl.innerHTML = result.html || '<p class="meta">No ship instance JSON files found under generated/&lt;fleet&gt;/.json</p>';
     }
 
     async function renderFromCurrentFiles() {
@@ -375,14 +489,58 @@
       contentEl.innerHTML = result.html || '<p class="meta">No ship instance JSON files found under generated/&lt;fleet&gt;/.json</p>';
     }
 
+    selectFleetBtn.addEventListener("click", async () => {
+      if (!window.showDirectoryPicker) {
+        dirPicker.click();
+        return;
+      }
+      try {
+        const rememberedHandle = selectedGeneratedHandle || await loadGeneratedHandle();
+        const pickerOptions = { mode: "read", id: "ftdamage-fleet-generated" };
+        if (rememberedHandle) {
+          pickerOptions.startIn = rememberedHandle;
+        }
+        const selected = await window.showDirectoryPicker(pickerOptions);
+        selectedGeneratedHandle = await resolveGeneratedHandle(selected);
+        await saveGeneratedHandle(selectedGeneratedHandle);
+        currentFiles = [];
+        await renderFromDirectoryHandle();
+      } catch (err) {
+        if (err && err.name === "AbortError") {
+          return;
+        }
+        metaEl.textContent = `Folder selection failed: ${err && err.message ? err.message : String(err)}`;
+      }
+    });
+
     dirPicker.addEventListener("change", async (event) => {
+      selectedGeneratedHandle = null;
       currentFiles = Array.from(event.target.files || []);
       await renderFromCurrentFiles();
     });
 
     rerenderBtn.addEventListener("click", async () => {
+      if (selectedGeneratedHandle) {
+        await renderFromDirectoryHandle();
+        return;
+      }
       await renderFromCurrentFiles();
     });
+
+    (async () => {
+      if (!window.showDirectoryPicker) {
+        return;
+      }
+      const remembered = await loadGeneratedHandle();
+      if (!remembered) {
+        return;
+      }
+      const permission = await remembered.queryPermission({ mode: "read" });
+      if (permission !== "granted") {
+        return;
+      }
+      selectedGeneratedHandle = await resolveGeneratedHandle(remembered);
+    })();
   </script>
 </body>
 </html>
