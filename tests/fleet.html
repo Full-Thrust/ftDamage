@@ -182,8 +182,11 @@
       }
 
       const rows = firecons.map((fc) => {
-        const status = fc && fc.status === 0 ? "(x)" : "(●)";
-        return `<div class="firecon-row">${status}</div>`;
+        const destroyed = fc && fc.status === 0;
+        const symbol = destroyed ? "(x)" : "(●)";
+        const label = destroyed ? "Destroyed" : "Undamaged";
+        const className = destroyed ? "status-destroyed" : "status-operational";
+        return `<div class="firecon-row">${symbol} <span class="status-pill ${className}">${label}</span></div>`;
       }).join("");
 
       return `<div class="firecons">${rows}</div>`;
