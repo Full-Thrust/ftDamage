@@ -15,6 +15,15 @@ export interface ThresholdReport {
   driveResult: string;
 }
 
+export interface SystemRollReport {
+  systemId: string;
+  systemLabel: string;
+  systemType: "weapon" | "drive" | "firecon" | "fighter";
+  rolls: number[];
+  thresholdIndices: number[];
+  finalState: string;
+}
+
 export interface DamageReport {
   requestedHits: number;
   appliedHits: number;
@@ -24,4 +33,5 @@ export interface DamageReport {
   category: ShipCategory;
   crossedThresholds: number[];
   thresholdReports: ThresholdReport[];
+  systemRolls: SystemRollReport[];
 }

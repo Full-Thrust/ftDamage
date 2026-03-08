@@ -44,7 +44,7 @@
         "P",
         "S"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -64,7 +64,7 @@
         "S",
         "A"
       ],
-      "status": 0
+      "status": 1
     }
   ]
 }

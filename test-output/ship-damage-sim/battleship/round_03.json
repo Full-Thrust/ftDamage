@@ -7,10 +7,10 @@
   },
   "heading": 1,
   "speed": 0,
-  "status": 0,
+  "status": 2,
   "damage": {
     "total": 22,
-    "hits": 22,
+    "hits": 18,
     "tracks": [
       [
         0,
@@ -37,20 +37,20 @@
         0
       ],
       [
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        1
       ]
     ]
   },
   "drive": {
-    "thrust": 0,
-    "status": 0
+    "thrust": 2,
+    "status": 2
   },
   "firecons": [
     {
-      "status": 0
+      "status": 1
     },
     {
       "status": 0
@@ -104,7 +104,7 @@
         "P",
         "A"
       ],
-      "status": 1
+      "status": 0
     },
     {
       "type": "BEAM",
@@ -124,7 +124,7 @@
         "S",
         "A"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",

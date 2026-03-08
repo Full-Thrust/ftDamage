@@ -5,7 +5,7 @@
 <style>body{font-family:Segoe UI,Arial,sans-serif;margin:20px;background:#f4f6f8;color:#111827}.meta{background:#fff;border:1px solid #d1d5db;border-radius:8px;padding:10px;margin-bottom:12px}</style>
 </head>
 <body>
-<div class="meta"><strong>Round:</strong> 1 | <strong>Step:</strong> 40% | <strong>Summary:</strong> requestedHits=2 | appliedHits=2 | damage=0->2/4 | thresholds=1</div>
+<div class="meta"><strong>Round:</strong> 1 | <strong>Step:</strong> 30% | <strong>Summary:</strong> requestedHits=1 | appliedHits=1 | damage=0->1/4 | thresholds=none</div>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,33 +19,31 @@
     .damaged { background:#fef9c3; color:#854d0e; }
     .dead { background:#fee2e2; color:#991b1b; }
     .card { background:#fff; border:1px solid #d1d5db; border-radius:8px; padding:12px; margin-bottom:12px; }
+    .track-row { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }
     table { width:100%; border-collapse:collapse; }
     th,td { border:1px solid #d1d5db; padding:6px 8px; text-align:left; }
   </style>
 </head>
 <body>
   <h1>Lancer / Corvette (LANCER_CORVETTE)</h1>
-  <div class="card">Ship Status: <span class="badge damaged">Damaged</span></div>
+  <div class="card">Ship Status: <span class="badge ok">Undamaged</span></div>
   <div class="card">
     <div>Position: x=0, y=0</div>
     <div>Heading: 1</div>
     <div>Speed: 0</div>
-    <div>Drive: thrust=4 <span class="badge damaged">Damaged</span></div>
-    <div>Damage: 2/4</div>
+    <div>Drive: thrust=8 <span class="badge ok">Undamaged</span></div>
+    <div>Damage: 1/4</div>
   </div>
   <div class="card"><h3>Damage Tracks</h3>
-<div>[x] [x]</div>
-<div>[ ] [ ]</div>
+<div class="track-row">[x] [ ]</div>
+<div class="track-row">[ ] [ ]</div>
   </div>
   <div class="card"><h3>Firecon</h3>
-<div>(x) <span class="badge dead">Destroyed</span></div>
-  </div>
-  <div class="card"><h3>Fighter Groups</h3>
-<div>None</div>
+<div>(●) <span class="badge ok">Undamaged</span></div>
   </div>
   <div class="card"><h3>Weapons</h3>
     <table><thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>
-    <tbody><tr><td>1</td><td>BEAM</td><td>B</td><td>F, P, S, A</td><td><span class="badge dead">Destroyed</span></td></tr></tbody></table>
+    <tbody><tr><td>1</td><td>BEAM</td><td>B</td><td>F, P, S, A</td><td><span class="badge ok">Undamaged</span></td></tr></tbody></table>
   </div>
 </body>
 </html>

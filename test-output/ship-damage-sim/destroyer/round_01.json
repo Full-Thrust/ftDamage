@@ -10,13 +10,13 @@
   "status": 2,
   "damage": {
     "total": 8,
-    "hits": 4,
+    "hits": 2,
     "tracks": [
       [
         0,
         0,
-        0,
-        0
+        1,
+        1
       ],
       [
         1,
@@ -44,7 +44,7 @@
         "P",
         "S"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -54,7 +54,7 @@
         "P",
         "S"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -64,7 +64,7 @@
         "S",
         "A"
       ],
-      "status": 0
+      "status": 1
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
-  "classKey": "ESCORT_CRUISER",
-  "name": "Escort Cruiser",
+  "classKey": "BATTLESHIP",
+  "name": "Battleship",
   "position": {
     "x": 0,
     "y": 0
@@ -9,10 +9,11 @@
   "speed": 0,
   "status": 0,
   "damage": {
-    "total": 14,
-    "hits": 14,
+    "total": 22,
+    "hits": 22,
     "tracks": [
       [
+        0,
         0,
         0,
         0,
@@ -20,6 +21,15 @@
         0
       ],
       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
         0,
         0,
         0,
@@ -35,10 +45,13 @@
     ]
   },
   "drive": {
-    "thrust": 3,
-    "status": 2
+    "thrust": 0,
+    "status": 0
   },
   "firecons": [
+    {
+      "status": 0
+    },
     {
       "status": 0
     },
@@ -52,7 +65,33 @@
       "class": "A",
       "arcs": [
         "F",
-        "P",
+        "P"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "S"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
         "S"
       ],
       "status": 0
@@ -85,7 +124,7 @@
         "S",
         "A"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",

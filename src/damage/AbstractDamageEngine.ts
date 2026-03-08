@@ -1,5 +1,5 @@
 import { Ship, ShipCategory } from "../model/Ship";
-import { DamageReport, ThresholdReport } from "./types";
+import { DamageReport, SystemRollReport, ThresholdReport } from "./types";
 
 export abstract class AbstractDamageEngine {
   public applyHits(ship: Ship, hits: number): DamageReport {
@@ -14,7 +14,7 @@ export abstract class AbstractDamageEngine {
     const nextHits = ship.getDamageHits();
     const category = ship.getThresholdCategory();
     const crossedThresholds = this.thresholdCrossingsByRowCompletion(previousHits, nextHits, total, ship.getDamageTracks());
-    const thresholdReports = this.applyThresholdChecks(ship, category, crossedThresholds);
+    const { thresholdReports, systemRolls } = this.applyThresholdChecks(ship, category, crossedThresholds);
 
     ship.syncStatusFromDamage();
 
@@ -27,6 +27,7 @@ export abstract class AbstractDamageEngine {
       category,
       crossedThresholds,
       thresholdReports,
+      systemRolls,
     };
   }
 
@@ -71,8 +72,13 @@ export abstract class AbstractDamageEngine {
     return applied;
   }
 
-  private applyThresholdChecks(ship: Ship, category: ShipCategory, crossedThresholds: number[]): ThresholdReport[] {
+  private applyThresholdChecks(
+    ship: Ship,
+    category: ShipCategory,
+    crossedThresholds: number[]
+  ): { thresholdReports: ThresholdReport[]; systemRolls: SystemRollReport[] } {
     const reports: ThresholdReport[] = [];
+    const systemRollRegistry = this.initializeSystemRollRegistry(ship);
 
     for (const thresholdIndex of crossedThresholds) {
       const minRoll = this.thresholdLossRollMin(category, thresholdIndex);
@@ -86,7 +92,9 @@ export abstract class AbstractDamageEngine {
 
       for (const index of ship.getOperationalWeaponIndices()) {
         rolled += 1;
-        if (this.rollD6() >= minRoll) {
+        const roll = this.rollD6();
+        this.recordSystemRoll(systemRollRegistry, `weapon-${index}`, thresholdIndex, roll);
+        if (roll >= minRoll) {
           ship.destroyWeapon(index);
           lost += 1;
           weaponsLost += 1;
@@ -95,7 +103,9 @@ export abstract class AbstractDamageEngine {
 
       if (ship.isDriveOperational()) {
         rolled += 1;
-        if (this.rollD6() >= minRoll) {
+        const roll = this.rollD6();
+        this.recordSystemRoll(systemRollRegistry, "drive", thresholdIndex, roll);
+        if (roll >= minRoll) {
           driveResult = ship.applyDriveCriticalHit();
           if (driveResult !== "none") {
             lost += 1;
@@ -108,7 +118,9 @@ export abstract class AbstractDamageEngine {
 
       for (const index of ship.getOperationalFireconIndices()) {
         rolled += 1;
-        if (this.rollD6() >= minRoll) {
+        const roll = this.rollD6();
+        this.recordSystemRoll(systemRollRegistry, `firecon-${index}`, thresholdIndex, roll);
+        if (roll >= minRoll) {
           ship.destroyFirecon(index);
           lost += 1;
           fireconsLost += 1;
@@ -117,7 +129,9 @@ export abstract class AbstractDamageEngine {
 
       for (const index of ship.getOperationalFighterGroupIndicesForThresholdChecks()) {
         rolled += 1;
-        if (this.rollD6() >= minRoll) {
+        const roll = this.rollD6();
+        this.recordSystemRoll(systemRollRegistry, `fighter-${index}`, thresholdIndex, roll);
+        if (roll >= minRoll) {
           ship.destroyFighterGroup(index);
           lost += 1;
           fightersLost += 1;
@@ -140,7 +154,103 @@ export abstract class AbstractDamageEngine {
       });
     }
 
-    return reports;
+    this.finalizeSystemRollRegistry(systemRollRegistry, ship);
+    return {
+      thresholdReports: reports,
+      systemRolls: Array.from(systemRollRegistry.values()),
+    };
+  }
+
+  private initializeSystemRollRegistry(ship: Ship): Map<string, SystemRollReport> {
+    const registry = new Map<string, SystemRollReport>();
+
+    for (let index = 0; index < ship.getWeaponCount(); index += 1) {
+      registry.set(`weapon-${index}`, {
+        systemId: `weapon-${index}`,
+        systemLabel: `Weapon ${index + 1}`,
+        systemType: "weapon",
+        rolls: [],
+        thresholdIndices: [],
+        finalState: this.binaryStatusLabel(ship.getWeaponStatus(index)),
+      });
+    }
+
+    registry.set("drive", {
+      systemId: "drive",
+      systemLabel: "Drive",
+      systemType: "drive",
+      rolls: [],
+      thresholdIndices: [],
+      finalState: this.ternaryStatusLabel(ship.getDriveStatus()),
+    });
+
+    for (let index = 0; index < ship.getFireconCount(); index += 1) {
+      registry.set(`firecon-${index}`, {
+        systemId: `firecon-${index}`,
+        systemLabel: `Firecon ${index + 1}`,
+        systemType: "firecon",
+        rolls: [],
+        thresholdIndices: [],
+        finalState: this.binaryStatusLabel(ship.getFireconStatus(index)),
+      });
+    }
+
+    const fighters = ship.getFighterGroups();
+    for (let index = 0; index < fighters.length; index += 1) {
+      registry.set(`fighter-${index}`, {
+        systemId: `fighter-${index}`,
+        systemLabel: `Fighter Group ${index + 1}`,
+        systemType: "fighter",
+        rolls: [],
+        thresholdIndices: [],
+        finalState: this.ternaryStatusLabel(fighters[index].status),
+      });
+    }
+
+    return registry;
+  }
+
+  private finalizeSystemRollRegistry(registry: Map<string, SystemRollReport>, ship: Ship): void {
+    for (let index = 0; index < ship.getWeaponCount(); index += 1) {
+      const entry = registry.get(`weapon-${index}`);
+      if (entry) entry.finalState = this.binaryStatusLabel(ship.getWeaponStatus(index));
+    }
+
+    const driveEntry = registry.get("drive");
+    if (driveEntry) driveEntry.finalState = this.ternaryStatusLabel(ship.getDriveStatus());
+
+    for (let index = 0; index < ship.getFireconCount(); index += 1) {
+      const entry = registry.get(`firecon-${index}`);
+      if (entry) entry.finalState = this.binaryStatusLabel(ship.getFireconStatus(index));
+    }
+
+    const fighters = ship.getFighterGroups();
+    for (let index = 0; index < fighters.length; index += 1) {
+      const entry = registry.get(`fighter-${index}`);
+      if (entry) entry.finalState = this.ternaryStatusLabel(fighters[index].status);
+    }
+  }
+
+  private recordSystemRoll(
+    registry: Map<string, SystemRollReport>,
+    systemId: string,
+    thresholdIndex: number,
+    roll: number
+  ): void {
+    const entry = registry.get(systemId);
+    if (!entry) return;
+    entry.thresholdIndices.push(thresholdIndex);
+    entry.rolls.push(roll);
+  }
+
+  private binaryStatusLabel(status: 0 | 1): string {
+    return status === 0 ? "Destroyed" : "Undamaged";
+  }
+
+  private ternaryStatusLabel(status: 0 | 1 | 2): string {
+    if (status === 0) return "Destroyed";
+    if (status === 2) return "Damaged";
+    return "Undamaged";
   }
 
   private completedRowsFromDestroyedHits(hits: number, tracks: number[][]): number {

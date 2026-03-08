@@ -1,0 +1,45 @@
+{
+  "classKey": "SCOUT_COURIER",
+  "name": "Scout / Courier",
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "heading": 1,
+  "speed": 0,
+  "status": 0,
+  "damage": {
+    "total": 2,
+    "hits": 2,
+    "tracks": [
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 4,
+    "status": 2
+  },
+  "firecons": [
+    {
+      "status": 0
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "C",
+      "arcs": [
+        "F",
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 1
+    }
+  ]
+}

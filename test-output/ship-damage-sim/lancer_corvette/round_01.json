@@ -7,14 +7,14 @@
   },
   "heading": 1,
   "speed": 0,
-  "status": 2,
+  "status": 1,
   "damage": {
     "total": 4,
-    "hits": 2,
+    "hits": 1,
     "tracks": [
       [
         0,
-        0
+        1
       ],
       [
         1,
@@ -23,12 +23,12 @@
     ]
   },
   "drive": {
-    "thrust": 4,
-    "status": 2
+    "thrust": 8,
+    "status": 1
   },
   "firecons": [
     {
-      "status": 0
+      "status": 1
     }
   ],
   "weapons": [
@@ -41,7 +41,7 @@
         "S",
         "A"
       ],
-      "status": 0
+      "status": 1
     }
   ]
 }

@@ -1,0 +1,118 @@
+{
+  "classKey": "CARRIER",
+  "name": "Carrier",
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "heading": 1,
+  "speed": 0,
+  "status": 2,
+  "damage": {
+    "total": 24,
+    "hits": 14,
+    "tracks": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 2,
+    "status": 1
+  },
+  "firecons": [
+    {
+      "status": 0
+    },
+    {
+      "status": 1
+    },
+    {
+      "status": 0
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "S"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "A"
+      ],
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "S",
+        "A"
+      ],
+      "status": 1
+    }
+  ],
+  "fighters": [
+    {
+      "count": 6,
+      "status": 1
+    },
+    {
+      "count": 6,
+      "status": 1
+    },
+    {
+      "count": 6,
+      "status": 1
+    }
+  ]
+}

@@ -10,7 +10,7 @@
   "status": 2,
   "damage": {
     "total": 8,
-    "hits": 6,
+    "hits": 4,
     "tracks": [
       [
         0,
@@ -19,20 +19,20 @@
         0
       ],
       [
-        0,
-        0,
+        1,
+        1,
         1,
         1
       ]
     ]
   },
   "drive": {
-    "thrust": 6,
-    "status": 1
+    "thrust": 3,
+    "status": 2
   },
   "firecons": [
     {
-      "status": 1
+      "status": 0
     }
   ],
   "weapons": [
@@ -44,7 +44,7 @@
         "P",
         "S"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -64,7 +64,7 @@
         "S",
         "A"
       ],
-      "status": 0
+      "status": 1
     }
   ]
 }

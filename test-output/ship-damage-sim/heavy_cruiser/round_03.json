@@ -1,0 +1,113 @@
+{
+  "classKey": "HEAVY_CRUISER",
+  "name": "Heavy Cruiser",
+  "position": {
+    "x": 0,
+    "y": 0
+  },
+  "heading": 1,
+  "speed": 0,
+  "status": 0,
+  "damage": {
+    "total": 18,
+    "hits": 18,
+    "tracks": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "drive": {
+    "thrust": 0,
+    "status": 0
+  },
+  "firecons": [
+    {
+      "status": 0
+    },
+    {
+      "status": 0
+    }
+  ],
+  "weapons": [
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "P"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "A",
+      "arcs": [
+        "F",
+        "S"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "A"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "A"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "S",
+        "A"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "S",
+        "A"
+      ],
+      "status": 0
+    }
+  ]
+}

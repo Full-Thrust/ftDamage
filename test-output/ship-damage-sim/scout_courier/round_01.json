@@ -7,16 +7,16 @@
   },
   "heading": 1,
   "speed": 0,
-  "status": 0,
+  "status": 1,
   "damage": {
     "total": 2,
-    "hits": 2,
+    "hits": 1,
     "tracks": [
       [
         0
       ],
       [
-        0
+        1
       ]
     ]
   },
@@ -39,7 +39,7 @@
         "S",
         "A"
       ],
-      "status": 0
+      "status": 1
     }
   ]
 }

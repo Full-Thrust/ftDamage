@@ -2,6 +2,7 @@ import assert from "assert";
 import { promises as fs } from "fs";
 import path from "path";
 import { Ship } from "./model/Ship";
+import { SystemRollReport } from "./damage/types";
 import { GenericShipClassJson } from "./model/types";
 import { Ft1eDamageEngine } from "./damage/Ft1eDamageEngine";
 
@@ -26,7 +27,7 @@ async function readGenericShipClasses(): Promise<Array<{ fileName: string; json:
 }
 
 function randomTenPercentStep(): number {
-  return (Math.floor(Math.random() * 10) + 1) * 10;
+  return (Math.floor(Math.random() * 5) + 1) * 10;
 }
 
 function toRoundFilePrefix(round: number): string {
@@ -38,13 +39,22 @@ async function writeRoundArtifacts(
   round: number,
   ship: Ship,
   stepPercent: number,
-  reportText: string
+  reportText: string,
+  cumulativeRollsBySystem: Record<string, Array<{ thresholdIndex: number; roll: number }>>
 ): Promise<void> {
   const prefix = toRoundFilePrefix(round);
   const jsonPath = path.join(outputDir, `${prefix}.json`);
   const htmlPath = path.join(outputDir, `${prefix}.html`);
 
   await fs.writeFile(jsonPath, ship.toJsonString(), "utf-8");
+
+  const rollAnnotations: Record<string, string> = {};
+  for (const systemId of Object.keys(cumulativeRollsBySystem)) {
+    const entries = cumulativeRollsBySystem[systemId];
+    if (!entries || !entries.length) continue;
+    const formatted = entries.map((entry) => `T${entry.thresholdIndex}:${entry.roll}`).join(", ");
+    rollAnnotations[systemId] = `(${formatted})`;
+  }
 
   const html = [
     "<!doctype html>",
@@ -55,7 +65,7 @@ async function writeRoundArtifacts(
     "</head>",
     "<body>",
     `<div class=\"meta\"><strong>Round:</strong> ${round} | <strong>Step:</strong> ${stepPercent}% | <strong>Summary:</strong> ${reportText}</div>`,
-    ship.toHtmlReport(),
+    ship.toHtmlReport(rollAnnotations),
     "</body>",
     "</html>",
   ].join("\n");
@@ -77,8 +87,9 @@ async function main(): Promise<void> {
 
     const ship = new Ship(item.json);
     let round = 0;
+    const cumulativeRollsBySystem: Record<string, Array<{ thresholdIndex: number; roll: number }>> = {};
 
-    await writeRoundArtifacts(classDir, round, ship, 0, "Initial pristine state");
+    await writeRoundArtifacts(classDir, round, ship, 0, "Initial pristine state", cumulativeRollsBySystem);
 
     while (ship.getStatus() !== 0) {
       round += 1;
@@ -89,6 +100,17 @@ async function main(): Promise<void> {
       const stepPercent = randomTenPercentStep();
       const hits = Math.max(1, Math.round(ship.getDamageTotal() * (stepPercent / 100)));
       const report = engine.applyHits(ship, hits);
+      for (const system of report.systemRolls) {
+        if (!cumulativeRollsBySystem[system.systemId]) {
+          cumulativeRollsBySystem[system.systemId] = [];
+        }
+        for (let idx = 0; idx < system.rolls.length; idx += 1) {
+          cumulativeRollsBySystem[system.systemId].push({
+            thresholdIndex: system.thresholdIndices[idx],
+            roll: system.rolls[idx],
+          });
+        }
+      }
 
       assert(report.nextHits <= report.total, `${item.json.classKey}: hits exceeded total`);
       assert(ship.getDamageHits() <= ship.getDamageTotal(), `${item.json.classKey}: ship hit count exceeded total`);
@@ -100,7 +122,7 @@ async function main(): Promise<void> {
         `thresholds=${report.crossedThresholds.length ? report.crossedThresholds.join(",") : "none"}`,
       ].join(" | ");
 
-      await writeRoundArtifacts(classDir, round, ship, stepPercent, reportText);
+      await writeRoundArtifacts(classDir, round, ship, stepPercent, reportText, cumulativeRollsBySystem);
     }
 
     assert(ship.getStatus() === 0, `${item.json.classKey}: expected ship destroyed at end of simulation`);

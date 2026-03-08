@@ -10,34 +10,34 @@
   "status": 2,
   "damage": {
     "total": 24,
-    "hits": 19,
+    "hits": 2,
     "tracks": [
       [
         0,
         0,
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        1
       ],
       [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
       ],
       [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
       ],
       [
-        0,
+        1,
         1,
         1,
         1,
@@ -47,18 +47,18 @@
     ]
   },
   "drive": {
-    "thrust": 1,
-    "status": 2
+    "thrust": 2,
+    "status": 1
   },
   "firecons": [
     {
-      "status": 0
+      "status": 1
     },
     {
-      "status": 0
+      "status": 1
     },
     {
-      "status": 0
+      "status": 1
     }
   ],
   "weapons": [
@@ -70,7 +70,7 @@
         "P",
         "S"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -80,7 +80,7 @@
         "P",
         "S"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -89,7 +89,7 @@
         "P",
         "A"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -104,15 +104,15 @@
   "fighters": [
     {
       "count": 6,
-      "status": 0
+      "status": 1
     },
     {
       "count": 6,
-      "status": 0
+      "status": 1
     },
     {
       "count": 6,
-      "status": 0
+      "status": 1
     }
   ]
 }

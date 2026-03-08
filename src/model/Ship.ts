@@ -78,19 +78,21 @@ export class Ship {
     return `${JSON.stringify(this.toJson(), null, 2)}\n`;
   }
 
-  toHtmlReport(): string {
+  toHtmlReport(rollAnnotations?: Record<string, string>): string {
+    const annotations = rollAnnotations ?? {};
     const tracks = this.getDamageTracks();
     const trackRows = tracks.length
       ? tracks
-          .map((row) => `<div>${row.map((cell) => (cell === 0 ? "[x]" : "[ ]")).join(" ")}</div>`)
+          .map((row) => `<div class="track-row">${row.map((cell) => (cell === 0 ? "[x]" : "[ ]")).join(" ")}</div>`)
           .join("\n")
       : "<div>No tracks</div>";
 
     const firecons = this.getFireconStatuses().length
       ? this.getFireconStatuses()
-          .map((status) => {
+          .map((status, index) => {
             const label = status === 0 ? "Destroyed" : "Undamaged";
-            return `<div>${status === 0 ? "(x)" : "(●)"} ${this.renderStatusBadge(label, this.getBinaryStatusClass(status))}</div>`;
+            const rollText = annotations[`firecon-${index}`] ? ` ${annotations[`firecon-${index}`]}` : "";
+            return `<div>${status === 0 ? "(x)" : "(●)"} ${this.renderStatusBadge(label, this.getBinaryStatusClass(status))}${rollText}</div>`;
           })
           .join("\n")
       : "<div>None</div>";
@@ -98,17 +100,25 @@ export class Ship {
     const fighters = this.getFighterGroups();
     const fighterRows = fighters.length
       ? fighters
-          .map((group) => {
+          .map((group, index) => {
+            const rollText = annotations[`fighter-${index}`] ? ` ${annotations[`fighter-${index}`]}` : "";
             if (group.status === 0) {
-              return `<div>(x) ${this.renderStatusBadge("Destroyed", this.getTernaryStatusClass(0))}</div>`;
+              return `<div>(x) ${this.renderStatusBadge("Destroyed", this.getTernaryStatusClass(0))}${rollText}</div>`;
             }
             if (group.status === 2) {
-              return `<div>( ) ${this.renderStatusBadge("Launched", this.getTernaryStatusClass(2))}</div>`;
+              return `<div>( ) ${this.renderStatusBadge("Launched", this.getTernaryStatusClass(2))}${rollText}</div>`;
             }
-            return `<div>(^) ${group.count} ${this.renderStatusBadge("Undamaged", this.getTernaryStatusClass(1))}</div>`;
+            return `<div>(^) ${group.count} ${this.renderStatusBadge("Undamaged", this.getTernaryStatusClass(1))}${rollText}</div>`;
           })
           .join("\n")
       : "<div>None</div>";
+    const fighterSection = fighters.length
+      ? [
+          "  <div class=\"card\"><h3>Fighter Groups</h3>",
+          fighterRows,
+          "  </div>",
+        ].join("\n")
+      : "";
 
     const weapons = this.getWeapons();
     const weaponRows = weapons.length
@@ -116,7 +126,8 @@ export class Ship {
           .map((weapon, index) => {
             const status = weapon.status === 0 ? "Destroyed" : "Undamaged";
             const statusClass = this.getBinaryStatusClass(weapon.status);
-            return `<tr><td>${index + 1}</td><td>${weapon.type}</td><td>${weapon.class}</td><td>${weapon.arcs.join(", ")}</td><td>${this.renderStatusBadge(status, statusClass)}</td></tr>`;
+            const rollText = annotations[`weapon-${index}`] ? ` ${annotations[`weapon-${index}`]}` : "";
+            return `<tr><td>${index + 1}</td><td>${weapon.type}</td><td>${weapon.class}</td><td>${weapon.arcs.join(", ")}</td><td>${this.renderStatusBadge(status, statusClass)}${rollText}</td></tr>`;
           })
           .join("\n")
       : '<tr><td colspan="5">No weapons</td></tr>';
@@ -135,6 +146,7 @@ export class Ship {
       "    .damaged { background:#fef9c3; color:#854d0e; }",
       "    .dead { background:#fee2e2; color:#991b1b; }",
       "    .card { background:#fff; border:1px solid #d1d5db; border-radius:8px; padding:12px; margin-bottom:12px; }",
+      "    .track-row { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre; }",
       "    table { width:100%; border-collapse:collapse; }",
       "    th,td { border:1px solid #d1d5db; padding:6px 8px; text-align:left; }",
       "  </style>",
@@ -146,7 +158,7 @@ export class Ship {
       `    <div>Position: x=${this.getPosition().x}, y=${this.getPosition().y}</div>`,
       `    <div>Heading: ${this.getHeading()}</div>`,
       `    <div>Speed: ${this.getSpeed()}</div>`,
-      `    <div>Drive: thrust=${this.getDriveThrust()} ${this.renderStatusBadge(this.getDriveStatusLabel(), this.getTernaryStatusClass(this.getDriveStatus()))}</div>`,
+      `    <div>Drive: thrust=${this.getDriveThrust()} ${this.renderStatusBadge(this.getDriveStatusLabel(), this.getTernaryStatusClass(this.getDriveStatus()))}${annotations.drive ? ` ${annotations.drive}` : ""}</div>`,
       `    <div>Damage: ${this.getDamageHits()}/${this.getDamageTotal()}</div>`,
       "  </div>",
       "  <div class=\"card\"><h3>Damage Tracks</h3>",
@@ -155,16 +167,14 @@ export class Ship {
       "  <div class=\"card\"><h3>Firecon</h3>",
       firecons,
       "  </div>",
-      "  <div class=\"card\"><h3>Fighter Groups</h3>",
-      fighterRows,
-      "  </div>",
+      fighterSection,
       "  <div class=\"card\"><h3>Weapons</h3>",
       "    <table><thead><tr><th>#</th><th>Type</th><th>Class</th><th>Arcs</th><th>Status</th></tr></thead>",
       `    <tbody>${weaponRows}</tbody></table>`,
       "  </div>",
       "</body>",
       "</html>",
-    ].join("\n");
+    ].filter(Boolean).join("\n");
   }
 
   getClassKey(): string {

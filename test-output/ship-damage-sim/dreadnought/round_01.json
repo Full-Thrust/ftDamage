@@ -7,10 +7,10 @@
   },
   "heading": 1,
   "speed": 0,
-  "status": 0,
+  "status": 2,
   "damage": {
     "total": 28,
-    "hits": 28,
+    "hits": 8,
     "tracks": [
       [
         0,
@@ -23,40 +23,40 @@
       ],
       [
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
       ],
       [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
       ],
       [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
       ]
     ]
   },
   "drive": {
-    "thrust": 2,
-    "status": 1
+    "thrust": 1,
+    "status": 2
   },
   "firecons": [
     {
-      "status": 0
+      "status": 1
     },
     {
       "status": 1
@@ -72,7 +72,7 @@
       "arcs": [
         "F"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -80,7 +80,7 @@
       "arcs": [
         "F"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -88,7 +88,7 @@
       "arcs": [
         "F"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -97,7 +97,7 @@
         "F",
         "P"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -124,7 +124,17 @@
         "F",
         "S"
       ],
-      "status": 0
+      "status": 1
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
+      ],
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -154,23 +164,13 @@
         "S",
         "A"
       ],
-      "status": 0
-    },
-    {
-      "type": "BEAM",
-      "class": "B",
-      "arcs": [
-        "P",
-        "S",
-        "A"
-      ],
-      "status": 0
+      "status": 1
     }
   ],
   "fighters": [
     {
       "count": 6,
-      "status": 0
+      "status": 1
     }
   ]
 }
