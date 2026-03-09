@@ -26,6 +26,29 @@ Open browser tools directly:
 - `tests/damage.html` (damage runner with write-back support)
 - `tests/fleet.html` (fleet/ship viewer from local `generated/` selection)
 
+## Tests
+
+Run terminal unit tests:
+
+```bash
+npm run test:unit
+```
+
+Run ship damage simulation test (generates per-round JSON/HTML output):
+
+```bash
+npm run test:ship-sim
+```
+
+Simulation output index:
+
+- `test-output/ship-damage-sim/index.html`
+
+Browser test pages:
+
+- `tests/damage.html`
+- `tests/fleet.html`
+
 ## Cross-Machine Sync
 
 Use Git as the source of truth:
