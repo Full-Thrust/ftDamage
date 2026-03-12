@@ -7,10 +7,10 @@
   },
   "heading": 1,
   "speed": 0,
-  "status": 2,
+  "status": 0,
   "damage": {
     "total": 28,
-    "hits": 24,
+    "hits": 28,
     "tracks": [
       [
         0,
@@ -43,10 +43,10 @@
         0,
         0,
         0,
-        1,
-        1,
-        1,
-        1
+        0,
+        0,
+        0,
+        0
       ]
     ]
   },
@@ -80,7 +80,7 @@
       "arcs": [
         "F"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -106,7 +106,7 @@
         "F",
         "P"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -123,6 +123,16 @@
       "arcs": [
         "F",
         "S"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "P",
+        "S",
+        "A"
       ],
       "status": 1
     },
@@ -134,17 +144,7 @@
         "S",
         "A"
       ],
-      "status": 0
-    },
-    {
-      "type": "BEAM",
-      "class": "B",
-      "arcs": [
-        "P",
-        "S",
-        "A"
-      ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",

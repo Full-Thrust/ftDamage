@@ -39,15 +39,15 @@
     ]
   },
   "drive": {
-    "thrust": 0,
-    "status": 0
+    "thrust": 4,
+    "status": 1
   },
   "firecons": [
     {
       "status": 0
     },
     {
-      "status": 0
+      "status": 1
     }
   ],
   "weapons": [
@@ -97,7 +97,7 @@
         "S",
         "A"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",
@@ -107,7 +107,7 @@
         "S",
         "A"
       ],
-      "status": 0
+      "status": 1
     }
   ]
 }

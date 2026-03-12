@@ -7,10 +7,10 @@
   },
   "heading": 1,
   "speed": 0,
-  "status": 0,
+  "status": 2,
   "damage": {
     "total": 14,
-    "hits": 14,
+    "hits": 10,
     "tracks": [
       [
         0,
@@ -27,10 +27,10 @@
         0
       ],
       [
-        0,
-        0,
-        0,
-        0
+        1,
+        1,
+        1,
+        1
       ]
     ]
   },
@@ -40,10 +40,10 @@
   },
   "firecons": [
     {
-      "status": 1
+      "status": 0
     },
     {
-      "status": 0
+      "status": 1
     }
   ],
   "weapons": [
@@ -55,7 +55,7 @@
         "P",
         "S"
       ],
-      "status": 1
+      "status": 0
     },
     {
       "type": "BEAM",
@@ -65,7 +65,7 @@
         "P",
         "A"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",

@@ -5,8 +5,10 @@ import { Ship } from "./model/Ship";
 import { SystemRollReport } from "./damage/types";
 import { GenericShipClassJson } from "./model/types";
 import { Ft1eDamageEngine } from "./damage/Ft1eDamageEngine";
+import { SeededD6, D6 } from "./dice/D6";
 
 const OUTPUT_DIR = path.join(process.cwd(), "test-output", "ship-damage-sim");
+const SIMULATION_SEED = 123456789;
 
 async function readGenericShipClasses(): Promise<Array<{ fileName: string; json: GenericShipClassJson }>> {
   const genericDir = path.join(process.cwd(), "generic");
@@ -26,8 +28,8 @@ async function readGenericShipClasses(): Promise<Array<{ fileName: string; json:
   return result;
 }
 
-function randomTenPercentStep(): number {
-  return (Math.floor(Math.random() * 5) + 1) * 10;
+function randomTenPercentStep(die: D6): number {
+  return Math.min(die.roll(), 5) * 10;
 }
 
 function toRoundFilePrefix(round: number): string {
@@ -40,7 +42,7 @@ async function writeRoundArtifacts(
   ship: Ship,
   stepPercent: number,
   reportText: string,
-  cumulativeRollsBySystem: Record<string, Array<{ thresholdIndex: number; roll: number }>>
+  cumulativeRollsBySystem: Record<string, Array<{ thresholdPoint: number; roll: number }>>
 ): Promise<void> {
   const prefix = toRoundFilePrefix(round);
   const jsonPath = path.join(outputDir, `${prefix}.json`);
@@ -52,7 +54,7 @@ async function writeRoundArtifacts(
   for (const systemId of Object.keys(cumulativeRollsBySystem)) {
     const entries = cumulativeRollsBySystem[systemId];
     if (!entries || !entries.length) continue;
-    const formatted = entries.map((entry) => `T${entry.thresholdIndex}:${entry.roll}`).join(", ");
+    const formatted = entries.map((entry) => `T${entry.thresholdPoint}:${entry.roll}`).join(", ");
     rollAnnotations[systemId] = `(${formatted})`;
   }
 
@@ -77,8 +79,9 @@ async function main(): Promise<void> {
   await fs.rm(OUTPUT_DIR, { recursive: true, force: true });
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
 
+  const die = new SeededD6(SIMULATION_SEED);
   const genericClasses = await readGenericShipClasses();
-  const engine = new Ft1eDamageEngine();
+  const engine = new Ft1eDamageEngine(die);
   const indexRows: string[] = [];
 
   for (const item of genericClasses) {
@@ -87,7 +90,7 @@ async function main(): Promise<void> {
 
     const ship = new Ship(item.json);
     let round = 0;
-    const cumulativeRollsBySystem: Record<string, Array<{ thresholdIndex: number; roll: number }>> = {};
+    const cumulativeRollsBySystem: Record<string, Array<{ thresholdPoint: number; roll: number }>> = {};
 
     await writeRoundArtifacts(classDir, round, ship, 0, "Initial pristine state", cumulativeRollsBySystem);
 
@@ -97,7 +100,7 @@ async function main(): Promise<void> {
         throw new Error(`Safety stop reached for ${item.json.classKey} (not destroyed after 50 rounds)`);
       }
 
-      const stepPercent = randomTenPercentStep();
+      const stepPercent = randomTenPercentStep(die);
       const hits = Math.max(1, Math.round(ship.getDamageTotal() * (stepPercent / 100)));
       const report = engine.applyHits(ship, hits);
       for (const system of report.systemRolls) {
@@ -106,7 +109,7 @@ async function main(): Promise<void> {
         }
         for (let idx = 0; idx < system.rolls.length; idx += 1) {
           cumulativeRollsBySystem[system.systemId].push({
-            thresholdIndex: system.thresholdIndices[idx],
+            thresholdPoint: system.thresholdPoints[idx],
             roll: system.rolls[idx],
           });
         }
@@ -143,6 +146,7 @@ async function main(): Promise<void> {
     "</head>",
     "<body>",
     "  <h1>Ship Damage Simulation Output</h1>",
+    `  <p><strong>RNG Seed:</strong> ${SIMULATION_SEED}</p>`,
     "  <p>Each class was instantiated from <code>generic/*.shipclass.json</code>, then damaged in random 10% increments until destroyed.</p>",
     "  <table>",
     "    <thead><tr><th>Class</th><th>Rounds To Destroy</th><th>Initial HTML</th><th>Final HTML</th><th>All Rounds</th></tr></thead>",
@@ -156,6 +160,7 @@ async function main(): Promise<void> {
   await fs.writeFile(indexPath, indexHtml, "utf-8");
 
   console.log(`Ship damage simulation completed for ${genericClasses.length} classes.`);
+  console.log(`RNG seed: ${SIMULATION_SEED}`);
   console.log(`Open: ${indexPath}`);
 }
 

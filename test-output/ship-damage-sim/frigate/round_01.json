@@ -10,12 +10,12 @@
   "status": 2,
   "damage": {
     "total": 6,
-    "hits": 2,
+    "hits": 3,
     "tracks": [
       [
         0,
         0,
-        1
+        0
       ],
       [
         1,
@@ -30,7 +30,7 @@
   },
   "firecons": [
     {
-      "status": 1
+      "status": 0
     }
   ],
   "weapons": [
@@ -42,7 +42,7 @@
         "P",
         "S"
       ],
-      "status": 1
+      "status": 0
     },
     {
       "type": "BEAM",
@@ -52,7 +52,7 @@
         "S",
         "A"
       ],
-      "status": 1
+      "status": 0
     }
   ]
 }

@@ -1,5 +1,5 @@
 import { Ship, ShipCategory } from "../model/Ship";
-import { DamageReport, SystemRollReport, ThresholdReport } from "./types";
+import { DamageReport, StandardDamageReport, SystemRollReport, ThresholdReport } from "./types";
 
 export abstract class AbstractDamageEngine {
   public applyHits(ship: Ship, hits: number): DamageReport {
@@ -18,7 +18,7 @@ export abstract class AbstractDamageEngine {
 
     ship.syncStatusFromDamage();
 
-    return {
+    return new StandardDamageReport({
       requestedHits: boundedHits,
       appliedHits,
       previousHits,
@@ -28,7 +28,7 @@ export abstract class AbstractDamageEngine {
       crossedThresholds,
       thresholdReports,
       systemRolls,
-    };
+    });
   }
 
   protected abstract thresholdLossRollMin(category: ShipCategory, thresholdIndex: number): number;
@@ -88,7 +88,7 @@ export abstract class AbstractDamageEngine {
       let fireconsLost = 0;
       let fightersLost = 0;
       let driveLost = 0;
-      let driveResult = "not-rolled";
+      let driveStatus = ship.getDriveStatus();
 
       for (const index of ship.getOperationalWeaponIndices()) {
         rolled += 1;
@@ -106,14 +106,15 @@ export abstract class AbstractDamageEngine {
         const roll = this.rollD6();
         this.recordSystemRoll(systemRollRegistry, "drive", thresholdIndex, roll);
         if (roll >= minRoll) {
-          driveResult = ship.applyDriveCriticalHit();
-          if (driveResult !== "none") {
+          ship.applyDriveCriticalHit();
+          driveStatus = ship.getDriveStatus();
+          if (driveStatus !== 1) {
             lost += 1;
             driveLost = 1;
           }
-        } else {
-          driveResult = "survived";
         }
+      } else {
+        driveStatus = ship.getDriveStatus();
       }
 
       for (const index of ship.getOperationalFireconIndices()) {
@@ -150,7 +151,7 @@ export abstract class AbstractDamageEngine {
         weaponsDestroyed: ship.getWeapons().filter((weapon) => weapon.status === 0).length,
         fireconsDestroyed: ship.getFireconStatuses().filter((status) => status === 0).length,
         fightersDestroyed: ship.getFighterGroups().filter((group) => group.status === 0).length,
-        driveResult,
+        driveStatus,
       });
     }
 
@@ -170,8 +171,8 @@ export abstract class AbstractDamageEngine {
         systemLabel: `Weapon ${index + 1}`,
         systemType: "weapon",
         rolls: [],
-        thresholdIndices: [],
-        finalState: this.binaryStatusLabel(ship.getWeaponStatus(index)),
+        thresholdPoints: [],
+        status: ship.getWeaponStatus(index),
       });
     }
 
@@ -180,8 +181,8 @@ export abstract class AbstractDamageEngine {
       systemLabel: "Drive",
       systemType: "drive",
       rolls: [],
-      thresholdIndices: [],
-      finalState: this.ternaryStatusLabel(ship.getDriveStatus()),
+      thresholdPoints: [],
+      status: ship.getDriveStatus(),
     });
 
     for (let index = 0; index < ship.getFireconCount(); index += 1) {
@@ -190,8 +191,8 @@ export abstract class AbstractDamageEngine {
         systemLabel: `Firecon ${index + 1}`,
         systemType: "firecon",
         rolls: [],
-        thresholdIndices: [],
-        finalState: this.binaryStatusLabel(ship.getFireconStatus(index)),
+        thresholdPoints: [],
+        status: ship.getFireconStatus(index),
       });
     }
 
@@ -202,8 +203,8 @@ export abstract class AbstractDamageEngine {
         systemLabel: `Fighter Group ${index + 1}`,
         systemType: "fighter",
         rolls: [],
-        thresholdIndices: [],
-        finalState: this.ternaryStatusLabel(fighters[index].status),
+        thresholdPoints: [],
+        status: fighters[index].status,
       });
     }
 
@@ -213,21 +214,21 @@ export abstract class AbstractDamageEngine {
   private finalizeSystemRollRegistry(registry: Map<string, SystemRollReport>, ship: Ship): void {
     for (let index = 0; index < ship.getWeaponCount(); index += 1) {
       const entry = registry.get(`weapon-${index}`);
-      if (entry) entry.finalState = this.binaryStatusLabel(ship.getWeaponStatus(index));
+      if (entry) entry.status = ship.getWeaponStatus(index);
     }
 
     const driveEntry = registry.get("drive");
-    if (driveEntry) driveEntry.finalState = this.ternaryStatusLabel(ship.getDriveStatus());
+    if (driveEntry) driveEntry.status = ship.getDriveStatus();
 
     for (let index = 0; index < ship.getFireconCount(); index += 1) {
       const entry = registry.get(`firecon-${index}`);
-      if (entry) entry.finalState = this.binaryStatusLabel(ship.getFireconStatus(index));
+      if (entry) entry.status = ship.getFireconStatus(index);
     }
 
     const fighters = ship.getFighterGroups();
     for (let index = 0; index < fighters.length; index += 1) {
       const entry = registry.get(`fighter-${index}`);
-      if (entry) entry.finalState = this.ternaryStatusLabel(fighters[index].status);
+      if (entry) entry.status = fighters[index].status;
     }
   }
 
@@ -239,18 +240,8 @@ export abstract class AbstractDamageEngine {
   ): void {
     const entry = registry.get(systemId);
     if (!entry) return;
-    entry.thresholdIndices.push(thresholdIndex);
+    entry.thresholdPoints.push(thresholdIndex);
     entry.rolls.push(roll);
-  }
-
-  private binaryStatusLabel(status: 0 | 1): string {
-    return status === 0 ? "Destroyed" : "Undamaged";
-  }
-
-  private ternaryStatusLabel(status: 0 | 1 | 2): string {
-    if (status === 0) return "Destroyed";
-    if (status === 2) return "Damaged";
-    return "Undamaged";
   }
 
   private completedRowsFromDestroyedHits(hits: number, tracks: number[][]): number {

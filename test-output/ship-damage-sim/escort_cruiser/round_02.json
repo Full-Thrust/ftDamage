@@ -10,20 +10,20 @@
   "status": 2,
   "damage": {
     "total": 14,
-    "hits": 9,
+    "hits": 4,
     "tracks": [
       [
         0,
         0,
         0,
         0,
-        0
+        1
       ],
       [
-        0,
-        0,
-        0,
-        0,
+        1,
+        1,
+        1,
+        1,
         1
       ],
       [
@@ -43,7 +43,7 @@
       "status": 1
     },
     {
-      "status": 0
+      "status": 1
     }
   ],
   "weapons": [
@@ -75,7 +75,7 @@
         "P",
         "A"
       ],
-      "status": 0
+      "status": 1
     },
     {
       "type": "BEAM",

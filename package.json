@@ -16,7 +16,8 @@
     "test:browser:fleet": "echo Open tests/fleet.html in Chrome or Edge and choose generated/ folder",
     "build": "tsc -p tsconfig.json",
     "generate:fleets": "npm run build && node dist/generateFleets.js",
-    "generate:fleets:ts": "tsx src/generateFleets.ts"
+    "generate:fleets:ts": "tsx src/generateFleets.ts",
+    "test:verify-repro": "bash ./scripts/verify-repro.sh"
   },
   "repository": {
     "type": "git",

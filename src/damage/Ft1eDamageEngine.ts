@@ -1,7 +1,15 @@
 import { ShipCategory } from "../model/Ship";
 import { AbstractDamageEngine } from "./AbstractDamageEngine";
+import { D6, TimeSeededD6 } from "../dice/D6";
 
 export class Ft1eDamageEngine extends AbstractDamageEngine {
+  private readonly die: D6;
+
+  constructor(die?: D6) {
+    super();
+    this.die = die ?? new TimeSeededD6();
+  }
+
   protected thresholdLossRollMin(category: ShipCategory, thresholdIndex: number): number {
     if (category === "ESCORT") return 4;
 
@@ -16,6 +24,6 @@ export class Ft1eDamageEngine extends AbstractDamageEngine {
   }
 
   protected rollD6(): number {
-    return Math.floor(Math.random() * 6) + 1;
+    return this.die.roll();
   }
 }

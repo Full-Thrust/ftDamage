@@ -21,12 +21,12 @@
     ]
   },
   "drive": {
-    "thrust": 4,
-    "status": 2
+    "thrust": 8,
+    "status": 1
   },
   "firecons": [
     {
-      "status": 0
+      "status": 1
     }
   ],
   "weapons": [
@@ -39,7 +39,7 @@
         "S",
         "A"
       ],
-      "status": 1
+      "status": 0
     }
   ]
 }

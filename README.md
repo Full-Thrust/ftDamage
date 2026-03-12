@@ -34,6 +34,12 @@ Run terminal unit tests:
 npm run test:unit
 ```
 
+Run reproducibility verification (unit tests twice + simulation twice with output hash check):
+
+```bash
+npm run test:verify-repro
+```
+
 Run ship damage simulation test (generates per-round JSON/HTML output):
 
 ```bash
@@ -48,6 +54,11 @@ Browser test pages:
 
 - `tests/damage.html`
 - `tests/fleet.html`
+
+## Markdown Preview (VS Code)
+
+- Open preview: `Cmd+Shift+V` (`markdown.showPreview`)
+- Open preview to side: `Cmd+K`, then `V` (`markdown.showPreviewToSide`)
 
 ## Cross-Machine Sync
 

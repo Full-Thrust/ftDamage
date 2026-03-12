@@ -1,6 +1,6 @@
 {
-  "classKey": "LIGHT_CRUISER",
-  "name": "Light Cruiser",
+  "classKey": "ESCORT_CRUISER",
+  "name": "Escort Cruiser",
   "position": {
     "x": 0,
     "y": 0
@@ -9,16 +9,18 @@
   "speed": 0,
   "status": 0,
   "damage": {
-    "total": 12,
-    "hits": 12,
+    "total": 14,
+    "hits": 14,
     "tracks": [
       [
+        0,
         0,
         0,
         0,
         0
       ],
       [
+        0,
         0,
         0,
         0,
@@ -38,7 +40,7 @@
   },
   "firecons": [
     {
-      "status": 1
+      "status": 0
     },
     {
       "status": 0
@@ -53,7 +55,7 @@
         "P",
         "S"
       ],
-      "status": 1
+      "status": 0
     },
     {
       "type": "BEAM",
@@ -61,6 +63,26 @@
       "arcs": [
         "F",
         "P",
+        "A"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "P",
+        "A"
+      ],
+      "status": 0
+    },
+    {
+      "type": "BEAM",
+      "class": "B",
+      "arcs": [
+        "F",
+        "S",
         "A"
       ],
       "status": 0

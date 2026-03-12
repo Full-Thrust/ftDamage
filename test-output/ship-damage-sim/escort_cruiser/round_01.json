@@ -7,15 +7,15 @@
   },
   "heading": 1,
   "speed": 0,
-  "status": 2,
+  "status": 1,
   "damage": {
     "total": 14,
-    "hits": 3,
+    "hits": 1,
     "tracks": [
       [
         0,
-        0,
-        0,
+        1,
+        1,
         1,
         1
       ],

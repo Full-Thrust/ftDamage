@@ -10,14 +10,14 @@
   "status": 2,
   "damage": {
     "total": 18,
-    "hits": 5,
+    "hits": 4,
     "tracks": [
       [
         0,
         0,
         0,
         0,
-        0,
+        1,
         1
       ],
       [
